@@ -9,6 +9,6 @@ use this code in terminal after coding:
        
         git add .
         
-        git commit -m "changed this"
+        git commit -m "write the new changes here"
         
         git push origin main
