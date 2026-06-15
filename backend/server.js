@@ -32,4 +32,27 @@ app.get('/api/products', (req, res) => {
     });
 });
 
+// Admin Route: Add a new product to the database
+app.post('/api/products', (req, res) => {
+    const { name, category, price, weight_g } = req.body;
+    
+    // Basic server-side validation
+    if (!name || !category || !price) {
+        return res.status(400).json({ error: "Name, category, and price are required." });
+    }
+
+    const insertQuery = "INSERT INTO products (name, category, price, weight_g, is_available) VALUES (?, ?, ?, ?, 1)";
+    
+    db.run(insertQuery, [name, category, price, weight_g], function(err) {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ 
+            success: true, 
+            message: "Product added successfully!", 
+            productId: this.lastID 
+        });
+    });
+});
+
 app.listen(5000, () => console.log("Backend API running on port 5000"));

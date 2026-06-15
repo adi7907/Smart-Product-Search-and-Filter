@@ -182,3 +182,17 @@
     border-right-color: var(--border);
   }
 }
+
+/* Tab & Admin Styles */
+.tabs { margin-top: 15px; display: flex; justify-content: center; gap: 10px; }
+.tabs button { padding: 10px 20px; cursor: pointer; border: none; background: #e0e0e0; border-radius: 4px; font-weight: bold;}
+.active-tab { background: #00796b !important; color: white; }
+
+.admin-content { display: flex; flex-direction: column; gap: 20px; }
+.admin-form-card, .admin-table-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.admin-form { display: flex; gap: 10px; }
+.admin-form input, .admin-form select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+.submit-btn { background: #d32f2f; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+
+.inventory-table { width: 100%; border-collapse: collapse; text-align: left; }
+.inventory-table th, .inventory-table td { border-bottom: 1px solid #ddd; padding: 12px; }
