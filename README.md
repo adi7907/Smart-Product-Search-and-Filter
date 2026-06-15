@@ -9,7 +9,10 @@ use this code in terminal before coding:
 
 
 use this code in terminal after coding:
-       
+
+
+        cd Smart-Product-Search-and-Filter
+        
         git add .
         
         git commit -m "write the new changes here"
