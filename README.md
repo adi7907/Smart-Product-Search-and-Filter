@@ -2,6 +2,8 @@
    **in development!!!
 
 use this code in terminal before coding:
+
+        cd Smart-Product-Search-and-Filter
        
         git pull origin main
 
