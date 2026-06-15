@@ -1,23 +1,35 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('./db');
+
 const app = express();
-
-// Security middleware to allow your teammate's frontend to talk to your backend
 app.use(cors());
-app.use(express.json()); 
+app.use(express.json());
 
-// A temporary fake database for Sharadha Stores
-const products = [
-  { id: 1, name: "Traditional Mango Pickle", category: "Pickles", price: 150, weight: "500g", isAvailable: true, description: "Spicy and tangy homemade mango pickle." },
-  { id: 2, name: "Besan Ladoo", category: "Sweets", price: 250, weight: "250g", isAvailable: true, description: "Sweet, roasted gram flour balls with ghee." },
-  { id: 3, name: "Organic Turmeric Powder", category: "Spices", price: 80, weight: "100g", isAvailable: true, description: "Pure, vibrant yellow turmeric for cooking." }
-];
-
-// The Standard API Route (The Waiter)
+// Main Search & Filter Route
 app.get('/api/products', (req, res) => {
-  res.json(products);
+    const { search, category, maxPrice } = req.query;
+
+    let query = "SELECT * FROM products WHERE 1=1";
+    let params = [];
+
+    if (search) {
+        query += " AND name LIKE ?";
+        params.push(`%${search}%`);
+    }
+    if (category && category !== 'All') {
+        query += " AND category = ?";
+        params.push(category);
+    }
+    if (maxPrice) {
+        query += " AND price <= ?";
+        params.push(Number(maxPrice));
+    }
+
+    db.all(query, params, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
 });
 
-// Start the server
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(5000, () => console.log("Backend API running on port 5000"));
