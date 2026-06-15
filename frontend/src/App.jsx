@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-// Importing our newly separated page components
+
 import ShopScreen from './pages/Shop';
 import LoginScreen from './pages/Login';
-import AdminScreen from './pages/Admin';
+import AdminScreen from './pages/Admin/Admin';
 
 export default function App() {
   const [products, setProducts] = useState([]);
