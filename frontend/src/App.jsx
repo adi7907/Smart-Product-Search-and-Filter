@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 
-import ShopScreen from './pages/Shop';
-import LoginScreen from './pages/Login';
+import ShopScreen from './pages/Shop/Shop';
 import AdminScreen from './pages/Admin/Admin';
+import LoginScreen from './pages/Login';
 
 export default function App() {
   const [products, setProducts] = useState([]);
