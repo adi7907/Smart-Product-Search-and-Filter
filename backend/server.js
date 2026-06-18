@@ -35,17 +35,62 @@ let db;
 (async () => {
   db = await open({ filename: './sharadha.db', driver: sqlite3.Database });
   
-  // Ensure the table has an image_url column!
+  // Ensure the table has an image_url column (and the new syllabus tables!)
   await db.exec(`
+    -- 1. Expanded Products Table (Now with Advanced Filters)
     CREATE TABLE IF NOT EXISTS products (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        category TEXT NOT NULL,
-        price REAL NOT NULL,
-        weight_g INTEGER,
-        is_available INTEGER DEFAULT 1,
-        image_url TEXT
-    )
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      category TEXT NOT NULL,
+      price REAL NOT NULL,
+      weight_g INTEGER,
+      image_url TEXT,
+      ingredients TEXT,          -- e.g., "Contains Nuts", "Garlic-Free"
+      festival_need TEXT,        -- e.g., "Diwali", "Navratri Fasting"
+      dietary_preference TEXT    -- e.g., "Vegan", "Sugar-Free"
+    );
+
+    -- 2. Users / Customers Table
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      phone TEXT,
+      role TEXT DEFAULT 'customer',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- 3. Ingredients & Batches (Tracking Shelf-life)
+    CREATE TABLE IF NOT EXISTS batches (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      product_id INTEGER,
+      batch_number TEXT NOT NULL,
+      manufacture_date DATE NOT NULL,
+      expiry_date DATE NOT NULL,
+      stock_quantity INTEGER NOT NULL,
+      FOREIGN KEY (product_id) REFERENCES products(id)
+    );
+
+    -- 4. Orders Table
+    CREATE TABLE IF NOT EXISTS orders (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      total_amount REAL NOT NULL,
+      delivery_status TEXT DEFAULT 'Processing', -- Processing, Dispatched, Delivered
+      order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+
+    -- 5. Cart Items Table (For Checkout Workflow)
+    CREATE TABLE IF NOT EXISTS cart_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      product_id INTEGER,
+      quantity INTEGER NOT NULL DEFAULT 1,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (product_id) REFERENCES products(id)
+    );
   `);
 })();
 
@@ -86,4 +131,39 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
+
+require('dotenv').config();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+// AI Visual Search Endpoint
+app.post('/api/visual-search', upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: "No image provided" });
+
+    // Convert the image to base64 for Gemini
+    const fs = require('fs');
+    const imagePath = req.file.path;
+    const imageData = fs.readFileSync(imagePath).toString("base64");
+
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    
+    const prompt = "You are a food identification assistant for an Indian grocery store. Look at this image and reply ONLY with the name of the food item or dish. Keep it to 1 to 3 words maximum (e.g., 'Mango Pickle', 'Ladoo', 'Samosa'). Do not use punctuation.";
+    
+    const imageParts = [{
+      inlineData: { data: imageData, mimeType: req.file.mimetype }
+    }];
+
+    const result = await model.generateContent([prompt, ...imageParts]);
+    const foodName = result.response.text().trim();
+
+    // Clean up the temporary file
+    fs.unlinkSync(imagePath);
+
+    res.json({ search_term: foodName });
+  } catch (error) {
+    console.error("Gemini AI Error:", error);
+    res.status(500).json({ error: "AI failed to analyze image" });
+  }
+});
 app.listen(5000, () => console.log("Backend API running on port 5000"));

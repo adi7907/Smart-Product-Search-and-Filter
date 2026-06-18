@@ -16,7 +16,23 @@ use this code in terminal after coding:
         
         git push origin main
 
+----
 
+**Use these code for starting backend and frontend servers respectively:**
+
+         
+        cd backend
+
+        node server.js
+
+AND
+        
+
+        cd frontend
+        npm run dev
+
+
+        
 ----
 ----
 
