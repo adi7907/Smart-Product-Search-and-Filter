@@ -25,9 +25,6 @@ export default function Navbar({ cartCount, isDarkMode, setIsDarkMode, setIsCart
           )}
         </button>
 
-        <Link to="/admin" className="text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400">
-          Admin
-        </Link>
       </div>
     </nav>
   );

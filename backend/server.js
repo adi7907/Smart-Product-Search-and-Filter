@@ -28,9 +28,13 @@ const upload = multer({ storage });
 
   const productRoutes = require('./routes/productRoutes')(db, upload);
   const aiRoutes = require('./routes/aiRoutes')(upload);
+  const batchRoutes = require('./routes/batchRoutes')(db);
+  const orderRoutes = require('./routes/orderRoutes')(db);
 
   app.use('/api/products', productRoutes);
   app.use('/api', aiRoutes);
+  app.use('/api/batches', batchRoutes);
+  app.use('/api/orders', orderRoutes);
 
   app.listen(5000, () => console.log("Backend API running on port 5000"));
 })();

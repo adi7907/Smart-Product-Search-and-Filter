@@ -7,7 +7,12 @@ export default function FilterSidebar({
   selectedFestivals, setSelectedFestivals,
   maxPrice, setMaxPrice, products
 }) {
-  const categories = [...new Set(products.map(p => p.category))];
+  const categories = [...new Set([
+    ...products.map(p => p.category), 
+    "Spices", "Flours", "Grains", "Ready to Eat", "Dairy", "Bakery", 
+    "Condiments", "Sauces", "Dry Fruits", "Herbs", "Nuts", "Breakfast", 
+    "Desserts", "Oils", "Jams"
+  ])];
   const diets = [...new Set(products.map(p => p.dietary_preference).filter(Boolean))];
   const festivals = [...new Set(products.map(p => p.festival_need).filter(Boolean))];
 
@@ -16,44 +21,6 @@ export default function FilterSidebar({
       <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border dark:border-slate-800 shadow-sm transition-colors sticky top-4">
         <h2 className="text-lg font-black text-slate-800 dark:text-white mb-4">Filters</h2>
         
-        <div className="mb-6">
-          <div className="flex gap-2">
-            <input 
-              type="text" 
-              placeholder="Search products..." 
-              className="w-full p-3 rounded-xl border dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button 
-              onClick={() => document.getElementById('visual-search-upload').click()}
-              className="p-3 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-xl hover:bg-teal-200 dark:hover:bg-teal-900 transition-colors shrink-0"
-              title="Visual Search"
-            >
-              📷
-            </button>
-            <input 
-              type="file" 
-              id="visual-search-upload" 
-              className="hidden" 
-              accept="image/*"
-              onChange={async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const formData = new FormData();
-                formData.append('image', file);
-                try {
-                  const res = await fetch('http://localhost:5000/api/visual-search', { method: 'POST', body: formData });
-                  const data = await res.json();
-                  if (data.search_term) setSearchTerm(data.search_term);
-                } catch (err) {
-                  console.error(err);
-                }
-              }} 
-            />
-          </div>
-        </div>
-
         <CheckboxGroup title="Categories" options={categories} selectedState={selectedCategories} setSelectedState={setSelectedCategories} />
         <CheckboxGroup title="Dietary Needs" options={diets} selectedState={selectedDiets} setSelectedState={setSelectedDiets} />
         <CheckboxGroup title="Festival Needs" options={festivals} selectedState={selectedFestivals} setSelectedState={setSelectedFestivals} />
