@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import ShopScreen from './pages/Shop/Shop';
 import AdminScreen from './pages/Admin/Admin';
-import LoginScreen from './pages/Login';
+import LoginScreen from './pages/Admin/Login';
 
 export default function App() {
   const [products, setProducts] = useState([]);

@@ -20,7 +20,7 @@ export default function AdminScreen({ products, fetchProducts, setIsAuthenticate
       <ProductForm fetchProducts={fetchProducts} />
       
       {/* 3. Render the dynamic inventory table */}
-      <ProductTable products={products} />
+      <ProductTable products={products} fetchProducts={fetchProducts} />
     </div>
   );
 }

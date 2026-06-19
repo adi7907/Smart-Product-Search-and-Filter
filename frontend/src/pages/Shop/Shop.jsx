@@ -1,45 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ShopLayout from './ShopLayout';
 
-export default function ShopScreen({ products }) {
+export default function Shop() {
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [category, setCategory] = useState('All');
-  const [maxPrice, setMaxPrice] = useState(1000);
   
-  // New States for Advanced Filters
-  const [dietaryPref, setDietaryPref] = useState('All');
-  const [festival, setFestival] = useState('All');
-  
-  const [cart, setCart] = useState([]);
+  // NEW Array-based state
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedDiets, setSelectedDiets] = useState([]);
+  const [selectedFestivals, setSelectedFestivals] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(2000);
 
-  const addToCart = (product) => {
-  setCart([...cart, product]);
-  alert(`${product.name} added to cart!`); // Simple feedback for now
-  };
-  
-  const safeProducts = Array.isArray(products) ? products : [];
-  
-  const filteredProducts = safeProducts.filter(p => {
-    const matchesSearch = (p.name || '').toLowerCase().includes((searchTerm || '').toLowerCase());
-    const matchesCategory = category === 'All' || p.category === category;
-    const matchesPrice = (p.price || 0) <= maxPrice;
+  useEffect(() => {
+    fetch('http://localhost:5000/api/products')
+      .then(res => res.json())
+      .then(data => setProducts(data))
+      .catch(err => console.error("Error fetching products:", err));
+  }, []);
+
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
+    const matchesDiet = selectedDiets.length === 0 || selectedDiets.includes(product.dietary_preference);
+    const matchesFestival = selectedFestivals.length === 0 || selectedFestivals.includes(product.festival_need);
+    const matchesPrice = product.price <= maxPrice;
     
-    // Day 13 Processing Logic
-    const matchesDietary = dietaryPref === 'All' || p.dietary_preference === dietaryPref;
-    const matchesFestival = festival === 'All' || p.festival_need === festival;
-    
-    return matchesSearch && matchesCategory && matchesPrice && matchesDietary && matchesFestival;
+    return matchesSearch && matchesCategory && matchesDiet && matchesFestival && matchesPrice;
   });
 
   return (
-    <ShopLayout 
+    <ShopLayout
       searchTerm={searchTerm} setSearchTerm={setSearchTerm}
-      category={category} setCategory={setCategory}
+      selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}
+      selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets}
+      selectedFestivals={selectedFestivals} setSelectedFestivals={setSelectedFestivals}
       maxPrice={maxPrice} setMaxPrice={setMaxPrice}
-      dietaryPref={dietaryPref} setDietaryPref={setDietaryPref}
-      festival={festival} setFestival={setFestival}
-      filteredProducts={filteredProducts}
-      products={safeProducts} 
+      filteredProducts={filteredProducts} products={products}
     />
   );
 }

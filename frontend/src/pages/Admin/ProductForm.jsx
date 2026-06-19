@@ -13,6 +13,9 @@ export default function ProductForm({ fetchProducts }) {
     formData.append('category', newProduct.category);
     formData.append('price', newProduct.price);
     formData.append('weight_g', newProduct.weight_g);
+    if (newProduct.ingredients) formData.append('ingredients', newProduct.ingredients);
+    if (newProduct.festival_need) formData.append('festival_need', newProduct.festival_need);
+    if (newProduct.dietary_preference) formData.append('dietary_preference', newProduct.dietary_preference);
     if (imageFile) formData.append('image', imageFile);
 
     try {
@@ -20,7 +23,7 @@ export default function ProductForm({ fetchProducts }) {
         method: 'POST', body: formData
       });
       if (response.ok) {
-        setNewProduct({ name: '', category: 'Pickles', price: '', weight_g: '' });
+        setNewProduct({ name: '', category: 'Pickles', price: '', weight_g: '', ingredients: '', festival_need: '', dietary_preference: '' });
         setImageFile(null);
         e.target.reset();
         fetchProducts(); 
