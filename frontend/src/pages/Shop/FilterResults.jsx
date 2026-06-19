@@ -8,13 +8,13 @@ export default function FilterResults({
 }) {
   
   // A helper function to check if ANY filters are active
-  const hasActiveFilters = searchTerm || category !== 'All' || dietaryPref !== 'All' || festival !== 'All' || maxPrice < 2000;
+  const hasActiveFilters = searchTerm || (category && category !== 'All') || (dietaryPref && dietaryPref !== 'All') || (festival && festival !== 'All') || maxPrice < 2000;
 
   const clearAllFilters = () => {
     setSearchTerm('');
-    setCategory('All');
-    setDietaryPref('All');
-    setFestival('All');
+    setCategory('');
+    setDietaryPref('');
+    setFestival('');
     setMaxPrice(2000); // Assuming 2000 is your max default
   };
 
@@ -36,21 +36,21 @@ export default function FilterResults({
             </span>
           )}
           
-          {category !== 'All' && (
+          {category && category !== 'All' && (
             <span className="px-3 py-1 bg-teal-50 text-teal-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {category} <button onClick={() => setCategory('All')} className="hover:text-teal-900">✕</button>
+              {category} <button onClick={() => setCategory('')} className="hover:text-teal-900">✕</button>
             </span>
           )}
 
-          {dietaryPref !== 'All' && (
+          {dietaryPref && dietaryPref !== 'All' && (
             <span className="px-3 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {dietaryPref} <button onClick={() => setDietaryPref('All')} className="hover:text-orange-900">✕</button>
+              {dietaryPref} <button onClick={() => setDietaryPref('')} className="hover:text-orange-900">✕</button>
             </span>
           )}
 
-          {festival !== 'All' && (
+          {festival && festival !== 'All' && (
             <span className="px-3 py-1 bg-pink-50 text-pink-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {festival} <button onClick={() => setFestival('All')} className="hover:text-pink-900">✕</button>
+              {festival} <button onClick={() => setFestival('')} className="hover:text-pink-900">✕</button>
             </span>
           )}
 

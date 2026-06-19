@@ -17,13 +17,41 @@ export default function FilterSidebar({
         <h2 className="text-lg font-black text-slate-800 dark:text-white mb-4">Filters</h2>
         
         <div className="mb-6">
-          <input 
-            type="text" 
-            placeholder="Search products..." 
-            className="w-full p-3 rounded-xl border dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <div className="flex gap-2">
+            <input 
+              type="text" 
+              placeholder="Search products..." 
+              className="w-full p-3 rounded-xl border dark:border-slate-700 bg-slate-50 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button 
+              onClick={() => document.getElementById('visual-search-upload').click()}
+              className="p-3 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-xl hover:bg-teal-200 dark:hover:bg-teal-900 transition-colors shrink-0"
+              title="Visual Search"
+            >
+              📷
+            </button>
+            <input 
+              type="file" 
+              id="visual-search-upload" 
+              className="hidden" 
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const formData = new FormData();
+                formData.append('image', file);
+                try {
+                  const res = await fetch('http://localhost:5000/api/visual-search', { method: 'POST', body: formData });
+                  const data = await res.json();
+                  if (data.search_term) setSearchTerm(data.search_term);
+                } catch (err) {
+                  console.error(err);
+                }
+              }} 
+            />
+          </div>
         </div>
 
         <CheckboxGroup title="Categories" options={categories} selectedState={selectedCategories} setSelectedState={setSelectedCategories} />
