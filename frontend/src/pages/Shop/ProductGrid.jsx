@@ -21,9 +21,9 @@ export default function ProductGrid({ filteredProducts = [], addToCart }) {
           <div key={p.id} className="bg-white rounded-2xl border shadow-sm flex flex-col overflow-hidden transition-shadow hover:shadow-md">
             <div className="cursor-pointer" onClick={() => setSelectedProduct(p)}>
               {p.image_url ? (
-                <img src={`http://localhost:5000${p.image_url}`} alt={p.name} className="w-full h-32 object-cover" />
+                <img src={`http://localhost:5000${p.image_url}`} alt={p.name} className="w-full h-48 object-cover" />
               ) : (
-                <div className="w-full h-32 bg-slate-100 flex items-center justify-center text-slate-400">No Image</div>
+                <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">No Image</div>
               )}
             </div>
             

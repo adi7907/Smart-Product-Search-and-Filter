@@ -1,17 +1,11 @@
 import { Link } from 'react-router-dom';
 
-export default function Navbar({ cartCount, isDarkMode, setIsDarkMode, setIsCartOpen }) {
+export default function Navbar({ cartCount, setIsCartOpen }) {
   return (
     <nav className="bg-white dark:bg-slate-900 p-4 shadow-sm border-b dark:border-slate-800 flex justify-between items-center transition-colors">
       <h1 className="text-2xl font-extrabold text-teal-600 dark:text-teal-400">Sharadha Stores</h1>
       
       <div className="flex items-center gap-6">
-        <button 
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-xl"
-        >
-          {isDarkMode ? '☀️' : '🌙'}
-        </button>
 
         <button 
           onClick={() => setIsCartOpen(true)}

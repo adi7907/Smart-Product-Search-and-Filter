@@ -13,16 +13,14 @@ export default function ShopLayout({
   selectedFestivals, setSelectedFestivals,
   maxPrice, setMaxPrice, filteredProducts, products
 }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    if (isDarkMode) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-  }, [isDarkMode]);
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const addToCart = (product) => {
     setCart(prev => {
@@ -41,8 +39,8 @@ export default function ShopLayout({
   const cartTotalItems = cart.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors ${isDarkMode ? 'dark' : ''}`}>
-      <Navbar cartCount={cartTotalItems} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} setIsCartOpen={setIsCartOpen} />
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors dark">
+      <Navbar cartCount={cartTotalItems} setIsCartOpen={setIsCartOpen} />
       
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8 flex gap-2">

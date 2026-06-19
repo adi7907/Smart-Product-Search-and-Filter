@@ -26,9 +26,18 @@ export default function FilterSidebar({
         <CheckboxGroup title="Festival Needs" options={festivals} selectedState={selectedFestivals} setSelectedState={setSelectedFestivals} />
 
         <div>
-          <label className="font-bold text-slate-800 dark:text-white flex justify-between mb-3">
+          <label className="font-bold text-slate-800 dark:text-white flex justify-between items-center mb-3">
             <span>Max Price</span>
-            <span className="text-teal-600 dark:text-teal-400">₹{maxPrice}</span>
+            <div className="flex items-center text-teal-600 dark:text-teal-400">
+              <span>₹</span>
+              <input 
+                type="number" 
+                min="0" max="10000"
+                value={maxPrice} 
+                onChange={(e) => setMaxPrice(Number(e.target.value))}
+                className="w-16 bg-transparent text-right font-bold focus:outline-none appearance-none"
+              />
+            </div>
           </label>
           <input 
             type="range" min="0" max="2000" step="50"
