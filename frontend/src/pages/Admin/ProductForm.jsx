@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import ProductDetailsFields from './ProductDetailsFields';
 import ImageUpload from './ImageUpload';
+import { API_URL } from '../../config';
 
 export default function ProductForm({ fetchProducts }) {
   const [newProduct, setNewProduct] = useState({ name: '', category: 'Pickles', price: '', weight_g: '' });
   const [imageFile, setImageFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData();
     formData.append('name', newProduct.name);
     formData.append('category', newProduct.category);
@@ -19,7 +22,7 @@ export default function ProductForm({ fetchProducts }) {
     if (imageFile) formData.append('image', imageFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${API_URL}/api/products`, {
         method: 'POST', body: formData
       });
       if (response.ok) {
@@ -30,6 +33,8 @@ export default function ProductForm({ fetchProducts }) {
       }
     } catch (error) {
       console.error("Failed to add product:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -46,8 +51,14 @@ export default function ProductForm({ fetchProducts }) {
         
         {/* 3. Submit Action */}
         <div className="md:col-span-2">
-          <button type="submit" className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-xl w-full h-10 transition-colors shadow-sm">
-            Save Item
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-xl w-full h-10 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center"
+          >
+            {isSubmitting ? (
+               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : "Save Item"}
           </button>
         </div>
         

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ShopScreen from './pages/Shop/Shop';
 import AdminScreen from './pages/Admin/Admin';
 import LoginScreen from './pages/Admin/Login';
+import { API_URL } from './config';
 
 export default function App() {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ export default function App() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(`${API_URL}/api/products`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {

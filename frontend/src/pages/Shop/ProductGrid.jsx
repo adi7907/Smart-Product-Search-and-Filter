@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import ProductDetailModal from './ProductDetailModal';
+import { API_URL } from '../../config';
 
 export default function ProductGrid({ filteredProducts = [], addToCart }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   if (filteredProducts.length === 0) {
     return (
-      <main className="flex-1 flex flex-col items-center justify-center p-12 bg-white rounded-2xl border border-slate-100 text-center">
-        <div className="text-6xl mb-4">🔍</div>
-        <h3 className="text-xl font-bold text-slate-800 mb-2">No products found</h3>
-        <p className="text-slate-500">Try adjusting your filters or search term to find what you're looking for.</p>
+      <main className="flex-1 flex flex-col items-center justify-center p-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm rounded-3xl border border-slate-200 dark:border-slate-800 text-center shadow-sm">
+        <div className="w-24 h-24 bg-teal-50 dark:bg-teal-900/30 rounded-full flex items-center justify-center text-5xl mb-6 shadow-inner">
+          🔍
+        </div>
+        <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">No delicious items found</h3>
+        <p className="text-slate-500 dark:text-slate-400 max-w-md">We couldn't find anything matching your current filters. Try removing some filters or searching for something else!</p>
       </main>
     );
   }
@@ -18,12 +21,13 @@ export default function ProductGrid({ filteredProducts = [], addToCart }) {
     <>
       <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {filteredProducts.map(p => (
-          <div key={p.id} className="bg-white rounded-2xl border shadow-sm flex flex-col overflow-hidden transition-shadow hover:shadow-md">
-            <div className="cursor-pointer" onClick={() => setSelectedProduct(p)}>
+          <div key={p.id} className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-teal-500/10 group">
+            <div className="cursor-pointer overflow-hidden relative" onClick={() => setSelectedProduct(p)}>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
               {p.image_url ? (
-                <img src={`http://localhost:5000${p.image_url}`} alt={p.name} className="w-full h-48 object-cover" />
+                <img src={`${API_URL}${p.image_url}`} alt={p.name} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105" />
               ) : (
-                <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">No Image</div>
+                <div className="w-full h-48 bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400">No Image</div>
               )}
             </div>
             

@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../../../config';
 
 export default function OrderManager() {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchOrders = () => {
-    fetch('http://localhost:5000/api/orders')
+    fetch(`${API_URL}/api/orders`)
       .then(res => res.json())
-      .then(data => setOrders(data))
-      .catch(console.error);
+      .then(data => {
+        setOrders(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -16,7 +24,7 @@ export default function OrderManager() {
 
   const updateStatus = async (id, status) => {
     try {
-      await fetch(`http://localhost:5000/api/orders/${id}/status`, {
+      await fetch(`${API_URL}/api/orders/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status })
@@ -35,8 +43,15 @@ export default function OrderManager() {
         </h3>
       </div>
       <div className="divide-y max-h-80 overflow-y-auto">
-        {orders.length === 0 ? (
-          <div className="p-6 text-slate-500 text-sm">No recent orders.</div>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="w-8 h-8 border-4 border-slate-200 border-t-teal-500 rounded-full animate-spin"></div>
+          </div>
+        ) : orders.length === 0 ? (
+          <div className="p-12 text-center text-slate-500">
+             <div className="text-4xl mb-2">🤷‍♂️</div>
+             <p>No recent orders found.</p>
+          </div>
         ) : orders.map(order => (
           <div key={order.id} className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors">
             <div>

@@ -5,6 +5,7 @@ import ProductGrid from './ProductGrid';
 import FilterResults from './FilterResults';
 import CartPanel from '../Cart/CartPanel';
 import CheckoutModal from '../Cart/CheckoutModal';
+import { API_URL } from '../../config';
 
 export default function ShopLayout({
   searchTerm, setSearchTerm,
@@ -17,6 +18,7 @@ export default function ShopLayout({
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [cart, setCart] = useState([]);
+  const [isProcessingVision, setIsProcessingVision] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.add('dark');
@@ -30,10 +32,20 @@ export default function ShopLayout({
     });
   };
 
-  const handleCheckout = () => {
-    setIsCartOpen(false);
-    setIsCheckoutModalOpen(true);
-    setCart([]); 
+  const handleCheckout = async () => {
+    try {
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      await fetch(`${API_URL}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ total_amount: totalAmount, user_id: 1 })
+      });
+      setIsCartOpen(false);
+      setIsCheckoutModalOpen(true);
+      setCart([]); 
+    } catch (err) {
+      console.error("Checkout failed", err);
+    }
   };
 
   const cartTotalItems = cart.reduce((s, i) => s + i.quantity, 0);
@@ -47,16 +59,21 @@ export default function ShopLayout({
             <input 
               type="text" 
               placeholder="Search products..." 
-              className="w-full p-4 rounded-2xl border dark:border-slate-700 bg-white dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors text-lg shadow-sm"
+              className="w-full p-4 rounded-2xl border dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors text-lg shadow-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button 
               onClick={() => document.getElementById('visual-search-upload').click()}
-              className="p-4 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-2xl hover:bg-teal-200 dark:hover:bg-teal-900 transition-colors shrink-0 shadow-sm"
+              className="p-4 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-2xl hover:bg-teal-200 dark:hover:bg-teal-900 transition-colors shrink-0 shadow-sm relative overflow-hidden"
               title="Visual Search"
+              disabled={isProcessingVision}
             >
-              <span className="text-xl">📷</span>
+              {isProcessingVision ? (
+                <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <span className="text-xl">📷</span>
+              )}
             </button>
             <input 
               type="file" 
@@ -66,14 +83,17 @@ export default function ShopLayout({
               onChange={async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
+                setIsProcessingVision(true);
                 const formData = new FormData();
                 formData.append('image', file);
                 try {
-                  const res = await fetch('http://localhost:5000/api/visual-search', { method: 'POST', body: formData });
+                  const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
                   const data = await res.json();
                   if (data.search_term) setSearchTerm(data.search_term);
                 } catch (err) {
                   console.error(err);
+                } finally {
+                  setIsProcessingVision(false);
                 }
               }} 
             />
