@@ -3,7 +3,7 @@ const { open } = require('sqlite');
 const path = require('path');
 
 async function connectDB() {
-  const dbPath = process.env.VERCEL ? path.join('/tmp', 'sharadha_v100.db') : './sharadha_v100.db';
+  const dbPath = process.env.VERCEL ? path.join('/tmp', 'sharadha_v20.db') : './sharadha_v20.db';
   const db = await open({ filename: dbPath, driver: sqlite3.Database });
   
   await db.exec(`
