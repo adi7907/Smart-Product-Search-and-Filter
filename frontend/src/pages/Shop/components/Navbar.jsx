@@ -46,13 +46,6 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
 
       {/* Right Navigation Controls */}
       <div className="flex items-center gap-3 shrink-0">
-        <Link 
-          to="/admin" 
-          className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition-all border border-slate-200 flex items-center gap-1.5"
-        >
-          <span>⚙️</span> Admin Panel
-        </Link>
-
         <button 
           onClick={() => setIsCartOpen(true)}
           className="relative px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm rounded-xl shadow-sm transition-all flex items-center gap-2 hover:scale-105 active:scale-95"
