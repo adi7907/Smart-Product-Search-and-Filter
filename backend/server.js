@@ -26,8 +26,13 @@ let routerPromise = null;
 async function getRouter() {
   if (!routerPromise) {
     routerPromise = (async () => {
-      const db = await connectDB();
-      await seedProducts(db);
+      let db = null;
+      try {
+        db = await connectDB();
+        await seedProducts(db);
+      } catch(err) {
+        console.error("SQLite disk mode unavailable, using failproof JS memory inventory:", err.message);
+      }
       const r = express.Router();
       const prodRoutes = require('./routes/productRoutes')(db, upload);
       const aiRoutes = require('./routes/aiRoutes')(upload);
