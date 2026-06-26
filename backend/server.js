@@ -20,22 +20,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 let routerPromise = null;
-async function getRouter() {
+function getRouter() {
   if (!routerPromise) {
-    let db = null;
-    if (!process.env.VERCEL) {
-      try {
-        const { connectDB } = require('./db/database');
-        const { seedProducts } = require('./db/seeder');
-        db = await connectDB();
-        await seedProducts(db);
-      } catch(err) {}
-    }
     const r = express.Router();
-    const prodRoutes = require('./routes/productRoutes')(db, upload);
+    const prodRoutes = require('./routes/productRoutes')(null, upload);
     const aiRoutes = require('./routes/aiRoutes')(upload);
-    const batchRoutes = require('./routes/batchRoutes')(db);
-    const orderRoutes = require('./routes/orderRoutes')(db);
+    const batchRoutes = require('./routes/batchRoutes')(null);
+    const orderRoutes = require('./routes/orderRoutes')(null);
 
     r.use('/api/products', prodRoutes);
     r.use('/products', prodRoutes);
@@ -50,10 +41,10 @@ async function getRouter() {
   return routerPromise;
 }
 
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   if (req.path.startsWith('/uploads')) return next();
   try {
-    const router = await getRouter();
+    const router = getRouter();
     router(req, res, next);
   } catch (err) {
     next(err);
