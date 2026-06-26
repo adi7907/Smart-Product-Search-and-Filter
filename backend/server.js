@@ -22,19 +22,35 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-(async () => {
-  const db = await connectDB();
-  await seedProducts(db);
+let routerPromise = null;
+async function getRouter() {
+  if (!routerPromise) {
+    routerPromise = (async () => {
+      const db = await connectDB();
+      await seedProducts(db);
+      const r = express.Router();
+      r.use('/api/products', require('./routes/productRoutes')(db, upload));
+      r.use('/api', require('./routes/aiRoutes')(upload));
+      r.use('/api/batches', require('./routes/batchRoutes')(db));
+      r.use('/api/orders', require('./routes/orderRoutes')(db));
+      return r;
+    })();
+  }
+  return routerPromise;
+}
 
-  const productRoutes = require('./routes/productRoutes')(db, upload);
-  const aiRoutes = require('./routes/aiRoutes')(upload);
-  const batchRoutes = require('./routes/batchRoutes')(db);
-  const orderRoutes = require('./routes/orderRoutes')(db);
+app.use(async (req, res, next) => {
+  if (req.path.startsWith('/uploads')) return next();
+  try {
+    const router = await getRouter();
+    router(req, res, next);
+  } catch (err) {
+    next(err);
+  }
+});
 
-  app.use('/api/products', productRoutes);
-  app.use('/api', aiRoutes);
-  app.use('/api/batches', batchRoutes);
-  app.use('/api/orders', orderRoutes);
-
+if (!process.env.VERCEL) {
   app.listen(5000, () => console.log("Backend API running on port 5000"));
-})();
+}
+
+module.exports = app;

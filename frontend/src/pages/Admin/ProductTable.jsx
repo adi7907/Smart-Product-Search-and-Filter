@@ -30,7 +30,7 @@ export default function ProductTable({ products, fetchProducts }) {
               <tr key={p.id}>
                 <td className="px-6 py-4">
                   {p.image_url ? (
-                    <img src={`${API_URL}${p.image_url}`} alt={p.name} className="w-12 h-12 object-cover rounded-lg border" />
+                    <img src={p.image_url.startsWith('http') ? p.image_url : `${API_URL}${p.image_url}`} alt={p.name} className="w-12 h-12 object-cover rounded-lg border" />
                   ) : (
                     <div className="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-xs text-slate-400">No Img</div>
                   )}

@@ -25,7 +25,7 @@ export default function ProductGrid({ filteredProducts = [], addToCart }) {
             <div className="cursor-pointer overflow-hidden relative" onClick={() => setSelectedProduct(p)}>
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
               {p.image_url ? (
-                <img src={`${API_URL}${p.image_url}`} alt={p.name} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={p.image_url.startsWith('http') ? p.image_url : `${API_URL}${p.image_url}`} alt={p.name} className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105" />
               ) : (
                 <div className="w-full h-48 bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400">No Image</div>
               )}

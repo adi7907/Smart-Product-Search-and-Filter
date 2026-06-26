@@ -1,3 +1,5 @@
+import { API_URL } from '../../config';
+
 export default function ProductDetailModal({ isOpen, onClose, product }) {
   if (!isOpen || !product) return null;
 
@@ -11,7 +13,7 @@ export default function ProductDetailModal({ isOpen, onClose, product }) {
         <div className="flex flex-col md:flex-row h-full max-h-[80vh] overflow-y-auto">
           <div className="w-full md:w-1/2 h-64 md:h-auto bg-slate-100">
             {product.image_url ? (
-              <img src={`http://localhost:5000${product.image_url}`} alt={product.name} className="w-full h-full object-cover" />
+              <img src={product.image_url.startsWith('http') ? product.image_url : `${API_URL}${product.image_url}`} alt={product.name} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-slate-400">No Image</div>
             )}

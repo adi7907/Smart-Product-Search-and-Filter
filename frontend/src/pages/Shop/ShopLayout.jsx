@@ -12,7 +12,7 @@ export default function ShopLayout({
   selectedCategories, setSelectedCategories,
   selectedDiets, setSelectedDiets,
   selectedFestivals, setSelectedFestivals,
-  maxPrice, setMaxPrice, filteredProducts, products
+  maxPrice, setMaxPrice, sortBy, setSortBy, filteredProducts, products
 }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
@@ -54,6 +54,27 @@ export default function ShopLayout({
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors dark">
       <Navbar cartCount={cartTotalItems} setIsCartOpen={setIsCartOpen} />
       
+      {/* Hero Storefront Banner */}
+      <div className="bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white py-12 px-6 shadow-md border-b border-slate-800">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <span className="bg-teal-500/20 text-teal-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-teal-500/30">Authentic Homemade Heritage</span>
+            <h1 className="text-4xl md:text-5xl font-black mt-3 mb-2 tracking-tight">Sharadha Stores 🏺</h1>
+            <p className="text-slate-300 max-w-xl text-base md:text-lg">Experience the nostalgia of pure, hand-churned traditional pickles, artisanal Diwali sweets, and aromatic filter coffee crafted with grandma's love.</p>
+          </div>
+          <div className="flex flex-wrap gap-3 shrink-0">
+            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
+              <p className="text-2xl font-extrabold text-teal-400">100%</p>
+              <p className="text-xs text-slate-300">Natural Ingredients</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
+              <p className="text-2xl font-extrabold text-orange-400">⚡ 24h</p>
+              <p className="text-xs text-slate-300">Fresh Dispatch</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8 flex gap-2">
             <input 
@@ -126,6 +147,7 @@ export default function ShopLayout({
               dietaryPref={selectedDiets.length ? selectedDiets[0] : ''} setDietaryPref={(v) => setSelectedDiets(v ? [v] : [])}
               festival={selectedFestivals.length ? selectedFestivals[0] : ''} setFestival={(v) => setSelectedFestivals(v ? [v] : [])}
               maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+              sortBy={sortBy} setSortBy={setSortBy}
             />
             <ProductGrid filteredProducts={filteredProducts} addToCart={addToCart} />
           </div>
