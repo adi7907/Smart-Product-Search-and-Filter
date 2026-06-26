@@ -5,9 +5,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { connectDB } = require('./db/database');
-const { seedProducts } = require('./db/seeder');
-
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -25,30 +22,30 @@ const upload = multer({ storage });
 let routerPromise = null;
 async function getRouter() {
   if (!routerPromise) {
-    routerPromise = (async () => {
-      let db = null;
+    let db = null;
+    if (!process.env.VERCEL) {
       try {
+        const { connectDB } = require('./db/database');
+        const { seedProducts } = require('./db/seeder');
         db = await connectDB();
         await seedProducts(db);
-      } catch(err) {
-        console.error("SQLite disk mode unavailable, using failproof JS memory inventory:", err.message);
-      }
-      const r = express.Router();
-      const prodRoutes = require('./routes/productRoutes')(db, upload);
-      const aiRoutes = require('./routes/aiRoutes')(upload);
-      const batchRoutes = require('./routes/batchRoutes')(db);
-      const orderRoutes = require('./routes/orderRoutes')(db);
+      } catch(err) {}
+    }
+    const r = express.Router();
+    const prodRoutes = require('./routes/productRoutes')(db, upload);
+    const aiRoutes = require('./routes/aiRoutes')(upload);
+    const batchRoutes = require('./routes/batchRoutes')(db);
+    const orderRoutes = require('./routes/orderRoutes')(db);
 
-      r.use('/api/products', prodRoutes);
-      r.use('/products', prodRoutes);
-      r.use('/api/batches', batchRoutes);
-      r.use('/batches', batchRoutes);
-      r.use('/api/orders', orderRoutes);
-      r.use('/orders', orderRoutes);
-      r.use('/api', aiRoutes);
-      r.use('/', aiRoutes);
-      return r;
-    })();
+    r.use('/api/products', prodRoutes);
+    r.use('/products', prodRoutes);
+    r.use('/api/batches', batchRoutes);
+    r.use('/batches', batchRoutes);
+    r.use('/api/orders', orderRoutes);
+    r.use('/orders', orderRoutes);
+    r.use('/api', aiRoutes);
+    r.use('/', aiRoutes);
+    routerPromise = r;
   }
   return routerPromise;
 }
