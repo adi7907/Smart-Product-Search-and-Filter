@@ -51,94 +51,101 @@ export default function ShopLayout({
   const cartTotalItems = cart.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors dark">
-      <Navbar cartCount={cartTotalItems} setIsCartOpen={setIsCartOpen} />
+    <div className="min-h-screen bg-[#FAF9F6] text-slate-800 transition-colors">
+      <Navbar 
+        cartCount={cartTotalItems} 
+        setIsCartOpen={setIsCartOpen} 
+        searchTerm={searchTerm} 
+        setSearchTerm={setSearchTerm}
+        isProcessingVision={isProcessingVision}
+      />
       
-      {/* Hero Storefront Banner */}
-      <div className="bg-gradient-to-r from-teal-900 via-slate-900 to-indigo-950 text-white py-12 px-6 shadow-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <span className="bg-teal-500/20 text-teal-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-teal-500/30">Authentic Homemade Heritage</span>
-            <h1 className="text-4xl md:text-5xl font-black mt-3 mb-2 tracking-tight">Sharadha Stores 🏺</h1>
-            <p className="text-slate-300 max-w-xl text-base md:text-lg">Experience the nostalgia of pure, hand-churned traditional pickles, artisanal Diwali sweets, and aromatic filter coffee crafted with grandma's love.</p>
-          </div>
-          <div className="flex flex-wrap gap-3 shrink-0">
-            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
-              <p className="text-2xl font-extrabold text-teal-400">100%</p>
-              <p className="text-xs text-slate-300">Natural Ingredients</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/10 text-center">
-              <p className="text-2xl font-extrabold text-orange-400">⚡ 24h</p>
-              <p className="text-xs text-slate-300">Fresh Dispatch</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Hidden file input for visual camera search */}
+      <input 
+        type="file" 
+        id="visual-search-upload" 
+        className="hidden" 
+        accept="image/*"
+        onChange={async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          setIsProcessingVision(true);
+          const formData = new FormData();
+          formData.append('image', file);
+          try {
+            const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.search_term) setSearchTerm(data.search_term);
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setIsProcessingVision(false);
+          }
+        }} 
+      />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="mb-8 flex gap-2">
-            <input 
-              type="text" 
-              placeholder="Search products..." 
-              className="w-full p-4 rounded-2xl border dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 backdrop-blur-md dark:text-white focus:ring-2 focus:ring-teal-500 focus:outline-none transition-colors text-lg shadow-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button 
-              onClick={() => document.getElementById('visual-search-upload').click()}
-              className="p-4 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-2xl hover:bg-teal-200 dark:hover:bg-teal-900 transition-colors shrink-0 shadow-sm relative overflow-hidden"
-              title="Visual Search"
-              disabled={isProcessingVision}
-            >
-              {isProcessingVision ? (
-                <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-              ) : (
-                <span className="text-xl">📷</span>
-              )}
-            </button>
-            <input 
-              type="file" 
-              id="visual-search-upload" 
-              className="hidden" 
-              accept="image/*"
-              onChange={async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                setIsProcessingVision(true);
-                const formData = new FormData();
-                formData.append('image', file);
-                try {
-                  const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
-                  const data = await res.json();
-                  if (data.search_term) setSearchTerm(data.search_term);
-                } catch (err) {
-                  console.error(err);
-                } finally {
-                  setIsProcessingVision(false);
-                }
-              }} 
-            />
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-8">
-          {isFiltersOpen && (
-            <FilterSidebar 
-              searchTerm={searchTerm} setSearchTerm={setSearchTerm} 
-              selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} 
-              selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets}
-              selectedFestivals={selectedFestivals} setSelectedFestivals={setSelectedFestivals}
-              maxPrice={maxPrice} setMaxPrice={setMaxPrice} products={products}
-            />
-          )}
+        <div className="flex flex-col md:flex-row gap-8 items-start">
           
-          <div className="flex-1 flex flex-col">
-            <div className="mb-4 flex items-center justify-between">
-              <button 
-                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-                className="px-6 py-2 bg-slate-800 dark:bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-900 transition-colors shadow-sm"
-              >
-                {isFiltersOpen ? "Hide Filters" : "Show Filters 🎛️"}
-              </button>
+          {/* Left Column: Intro Box + Filter Sidebar */}
+          <div className="w-full md:w-80 shrink-0 flex flex-col gap-6">
+            
+            {/* Compact Intro Card on Left */}
+            <div className="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/15 p-5 rounded-3xl border border-orange-200/60 shadow-sm relative overflow-hidden">
+              <div className="flex items-center gap-2.5 mb-2">
+                <span className="text-2xl">🏺</span>
+                <h3 className="font-black text-slate-900 tracking-tight text-lg">Sharadha Heritage</h3>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-3">
+                Crafting pure, hand-churned traditional pickles, artisanal ghee sweets, and aromatic South Indian filter coffee with grandma's timeless recipes.
+              </p>
+              <div className="flex items-center gap-2 text-[11px] font-extrabold text-orange-700 bg-white/80 px-3 py-1.5 rounded-xl border border-orange-200/50 shadow-2xs">
+                <span>⚡ 100% Preservative Free</span>
+              </div>
+            </div>
+
+            {/* Filter Toggle Button for Mobile */}
+            <button 
+              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+              className="md:hidden w-full py-3 bg-slate-900 text-white font-bold rounded-2xl shadow-md flex items-center justify-center gap-2"
+            >
+              <span>🎛️</span> {isFiltersOpen ? "Hide Filters" : "Show Filters"}
+            </button>
+
+            {/* Desktop & Open Filters */}
+            <div className={`${isFiltersOpen ? 'block' : 'hidden'} md:block w-full`}>
+              <FilterSidebar 
+                searchTerm={searchTerm} setSearchTerm={setSearchTerm} 
+                selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} 
+                selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets}
+                selectedFestivals={selectedFestivals} setSelectedFestivals={setSelectedFestivals}
+                maxPrice={maxPrice} setMaxPrice={setMaxPrice} products={products}
+              />
+            </div>
+
+          </div>
+          
+          {/* Right Main Column: Category Pills + Results + Grid */}
+          <div className="flex-1 flex flex-col w-full min-w-0">
+            
+            {/* Quick Swiggy/Zomato Category Pill Tabs */}
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-4 scrollbar-none shrink-0">
+              {['All', 'Pickles', 'Sweets', 'Snacks', 'Beverages', 'Pantry', 'Spices'].map((cat) => {
+                const isActive = (cat === 'All' && selectedCategories.length === 0) || selectedCategories.includes(cat);
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategories(cat === 'All' ? [] : [cat])}
+                    className={`px-5 py-2.5 rounded-2xl font-black text-xs shrink-0 transition-all flex items-center gap-2 shadow-2xs ${
+                      isActive 
+                        ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20 scale-105' 
+                        : 'bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 border border-slate-200/80'
+                    }`}
+                  >
+                    <span>{cat === 'Pickles' ? '🍯' : cat === 'Sweets' ? '🍬' : cat === 'Snacks' ? '🥨' : cat === 'Beverages' ? '☕' : cat === 'Spices' ? '🌾' : '⚡'}</span>
+                    <span>{cat}</span>
+                  </button>
+                );
             </div>
 
             <FilterResults 
