@@ -20,21 +20,20 @@ export default function ShopLayout({
   const [cart, setCart] = useState([]);
   const [isProcessingVision, setIsProcessingVision] = useState(false);
 
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
-
   const addToCart = (product) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) return prev.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
-      return [...prev, { ...product, quantity: 1 }];
+    setCart(prevCart => {
+      const existing = prevCart.find(item => item.id === product.id);
+      if (existing) {
+        return prevCart.map(item => 
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
     });
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (totalAmount) => {
     try {
-      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       await fetch(`${API_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,7 +50,7 @@ export default function ShopLayout({
   const cartTotalItems = cart.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-slate-800 transition-colors">
+    <div className="min-h-screen bg-slate-50 text-slate-800 transition-colors">
       <Navbar 
         cartCount={cartTotalItems} 
         setIsCartOpen={setIsCartOpen} 
@@ -60,7 +59,7 @@ export default function ShopLayout({
         isProcessingVision={isProcessingVision}
       />
       
-      {/* Hidden file input for visual camera search */}
+      {/* Hidden file input for visual search */}
       <input 
         type="file" 
         id="visual-search-upload" 
@@ -90,18 +89,15 @@ export default function ShopLayout({
           {/* Left Column: Intro Box + Filter Sidebar */}
           <div className="w-full md:w-80 shrink-0 flex flex-col gap-6">
             
-            {/* Compact Intro Card on Left */}
-            <div className="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/15 p-5 rounded-3xl border border-orange-200/60 shadow-sm relative overflow-hidden">
-              <div className="flex items-center gap-2.5 mb-2">
+            {/* Small Clean Intro Card on Left */}
+            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
+              <div className="flex items-center gap-2 mb-2">
                 <span className="text-2xl">🏺</span>
-                <h3 className="font-black text-slate-900 tracking-tight text-lg">Sharadha Heritage</h3>
+                <h3 className="font-bold text-slate-900 text-base">Sharadha Stores</h3>
               </div>
-              <p className="text-xs text-slate-600 leading-relaxed font-medium mb-3">
-                Crafting pure, hand-churned traditional pickles, artisanal ghee sweets, and aromatic South Indian filter coffee with grandma's timeless recipes.
+              <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                Authentic handcrafted traditional Indian pickles, Diwali sweets, savory snacks, and aromatic filter coffee.
               </p>
-              <div className="flex items-center gap-2 text-[11px] font-extrabold text-orange-700 bg-white/80 px-3 py-1.5 rounded-xl border border-orange-200/50 shadow-2xs">
-                <span>⚡ 100% Preservative Free</span>
-              </div>
             </div>
 
             {/* Filter Toggle Button for Mobile */}
@@ -125,27 +121,27 @@ export default function ShopLayout({
 
           </div>
           
-          {/* Right Main Column: Category Pills + Results + Grid */}
+          {/* Right Main Column: Category Tabs + Results + Grid */}
           <div className="flex-1 flex flex-col w-full min-w-0">
             
-            {/* Quick Swiggy/Zomato Category Pill Tabs */}
-            <div className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-4 scrollbar-none shrink-0">
+            {/* Quick Category Tabs */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-4 scrollbar-none shrink-0">
               {['All', 'Pickles', 'Sweets', 'Snacks', 'Beverages', 'Pantry', 'Spices'].map((cat) => {
                 const isActive = (cat === 'All' && selectedCategories.length === 0) || selectedCategories.includes(cat);
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategories(cat === 'All' ? [] : [cat])}
-                    className={`px-5 py-2.5 rounded-2xl font-black text-xs shrink-0 transition-all flex items-center gap-2 shadow-2xs ${
+                    className={`px-4 py-2 rounded-xl font-bold text-xs shrink-0 transition-all border ${
                       isActive 
-                        ? 'bg-slate-900 text-white shadow-lg shadow-slate-900/20 scale-105' 
-                        : 'bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 border border-slate-200/80'
+                        ? 'bg-teal-600 text-white border-teal-600 shadow-sm' 
+                        : 'bg-white text-slate-600 hover:bg-slate-100 border-slate-200'
                     }`}
                   >
-                    <span>{cat === 'Pickles' ? '🍯' : cat === 'Sweets' ? '🍬' : cat === 'Snacks' ? '🥨' : cat === 'Beverages' ? '☕' : cat === 'Spices' ? '🌾' : '⚡'}</span>
-                    <span>{cat}</span>
+                    {cat}
                   </button>
                 );
+              })}
             </div>
 
             <FilterResults 
