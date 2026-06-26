@@ -29,10 +29,19 @@ async function getRouter() {
       const db = await connectDB();
       await seedProducts(db);
       const r = express.Router();
-      r.use('/api/products', require('./routes/productRoutes')(db, upload));
-      r.use('/api', require('./routes/aiRoutes')(upload));
-      r.use('/api/batches', require('./routes/batchRoutes')(db));
-      r.use('/api/orders', require('./routes/orderRoutes')(db));
+      const prodRoutes = require('./routes/productRoutes')(db, upload);
+      const aiRoutes = require('./routes/aiRoutes')(upload);
+      const batchRoutes = require('./routes/batchRoutes')(db);
+      const orderRoutes = require('./routes/orderRoutes')(db);
+
+      r.use('/api/products', prodRoutes);
+      r.use('/products', prodRoutes);
+      r.use('/api/batches', batchRoutes);
+      r.use('/batches', batchRoutes);
+      r.use('/api/orders', orderRoutes);
+      r.use('/orders', orderRoutes);
+      r.use('/api', aiRoutes);
+      r.use('/', aiRoutes);
       return r;
     })();
   }
