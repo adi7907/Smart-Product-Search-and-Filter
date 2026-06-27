@@ -12,7 +12,7 @@ export default function ShopLayout({
   selectedCategories, setSelectedCategories,
   selectedDiets, setSelectedDiets,
   selectedFestivals, setSelectedFestivals,
-  maxPrice, setMaxPrice, sortBy, setSortBy, filteredProducts, products
+  maxPrice, setMaxPrice, sortBy, setSortBy, filteredProducts, products, customerAuth, onLogout
 }) {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
@@ -57,6 +57,8 @@ export default function ShopLayout({
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}
         isProcessingVision={isProcessingVision}
+        customerAuth={customerAuth}
+        onLogout={onLogout}
       />
       
       {/* Hidden file input for visual search */}

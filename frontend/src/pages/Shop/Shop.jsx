@@ -22,7 +22,7 @@ function fuzzyMatch(str = '', query = '') {
   return (matchCount / queryChars.size) >= 0.75 && Math.abs(cleanStr.length - cleanQuery.length) <= 5;
 }
 
-export default function Shop() {
+export default function Shop({ customerAuth, onLogout }) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -67,6 +67,7 @@ export default function Shop() {
       maxPrice={maxPrice} setMaxPrice={setMaxPrice}
       sortBy={sortBy} setSortBy={setSortBy}
       filteredProducts={filteredProducts} products={products}
+      customerAuth={customerAuth} onLogout={onLogout}
     />
   );
 }
