@@ -9,12 +9,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-app.use('/uploads', express.static(uploadDir));
+// Vercel serverless has a read-only filesystem — use /tmp which is always writable
+const uploadDir = process.env.VERCEL
+  ? '/tmp/uploads'
+  : require('path').join(__dirname, 'uploads');
+try {
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+} catch(e) {}
+if (!process.env.VERCEL) {
+  app.use('/uploads', express.static(uploadDir));
+}
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
+  destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage });
