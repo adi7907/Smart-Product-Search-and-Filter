@@ -50,7 +50,7 @@ export default function ShopLayout({
   const cartTotalItems = cart.reduce((s, i) => s + i.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 transition-colors">
+    <div className="min-h-screen bg-[#fdfbf7] text-stone-800 transition-colors font-sans">
       <Navbar 
         cartCount={cartTotalItems} 
         setIsCartOpen={setIsCartOpen} 
@@ -90,20 +90,23 @@ export default function ShopLayout({
           <div className="w-full md:w-80 shrink-0 flex flex-col gap-6">
             
             {/* Small Clean Intro Card on Left */}
-            <div className="bg-white p-5 rounded-3xl border border-slate-200/80 shadow-xs">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🏺</span>
-                <h3 className="font-bold text-slate-900 text-base">Sharadha Stores</h3>
+            <div className="bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-white p-6 rounded-3xl border border-orange-200/60 shadow-sm relative overflow-hidden">
+              <div className="flex items-center gap-3 mb-3">
+                <img src="/logo.png" alt="Icon" className="w-12 h-12 object-contain drop-shadow-xs" />
+                <div>
+                  <h3 className="font-black text-stone-900 text-lg leading-tight">SHARADHA</h3>
+                  <span className="text-[11px] font-extrabold text-orange-600 tracking-wider">STORES & SAVORIES</span>
+                </div>
               </div>
-              <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                Authentic handcrafted traditional Indian pickles, Diwali sweets, savory snacks, and aromatic filter coffee.
+              <p className="text-xs text-stone-600 leading-relaxed font-medium">
+                Experience authentic handcrafted traditional Indian pickles, Diwali sweets, crunchy snacks, and aromatic filter coffee prepared with pure ingredients.
               </p>
             </div>
 
             {/* Filter Toggle Button for Mobile */}
             <button 
               onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-              className="md:hidden w-full py-3 bg-slate-900 text-white font-bold rounded-2xl shadow-md flex items-center justify-center gap-2"
+              className="md:hidden w-full py-3.5 bg-stone-900 text-white font-extrabold rounded-2xl shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>🎛️</span> {isFiltersOpen ? "Hide Filters" : "Show Filters"}
             </button>
@@ -125,20 +128,20 @@ export default function ShopLayout({
           <div className="flex-1 flex flex-col w-full min-w-0">
             
             {/* Quick Category Tabs */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-4 scrollbar-none shrink-0">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-4 mb-4 scrollbar-none shrink-0">
               {['All', 'Pickles', 'Sweets', 'Snacks', 'Beverages', 'Pantry', 'Spices'].map((cat) => {
                 const isActive = (cat === 'All' && selectedCategories.length === 0) || selectedCategories.includes(cat);
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategories(cat === 'All' ? [] : [cat])}
-                    className={`px-4 py-2 rounded-xl font-bold text-xs shrink-0 transition-all border ${
+                    className={`px-5 py-2.5 rounded-2xl font-extrabold text-xs shrink-0 transition-all cursor-pointer ${
                       isActive 
-                        ? 'bg-teal-600 text-white border-teal-600 shadow-sm' 
-                        : 'bg-white text-slate-600 hover:bg-slate-100 border-slate-200'
+                        ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/25 scale-105' 
+                        : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80 shadow-2xs'
                     }`}
                   >
-                    {cat}
+                    {cat === 'All' ? '🍽️ All Dishes' : cat === 'Pickles' ? '🥭 Pickles' : cat === 'Sweets' ? '🍬 Sweets' : cat === 'Snacks' ? '🥨 Snacks' : cat === 'Beverages' ? '☕ Beverages' : cat === 'Pantry' ? '🫙 Pantry' : '🌶️ Spices'}
                   </button>
                 );
               })}
@@ -163,13 +166,13 @@ export default function ShopLayout({
       {/* Floating Action Button for Cart */}
       <button
         onClick={() => setIsCartOpen(true)}
-        className="fixed bottom-8 right-8 bg-teal-600 hover:bg-teal-700 text-white px-6 py-4 rounded-full shadow-2xl transition-transform hover:scale-105 flex items-center gap-3 z-40"
+        className="fixed bottom-8 right-8 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 hover:from-orange-700 hover:to-amber-700 text-white px-7 py-4 rounded-full shadow-2xl shadow-orange-600/40 transition-transform hover:scale-105 flex items-center gap-3 z-40 cursor-pointer border border-white/20"
       >
         <span className="text-2xl">🛒</span>
         {cartTotalItems > 0 ? (
-          <span className="font-bold text-lg">{cartTotalItems} {cartTotalItems === 1 ? 'Item' : 'Items'}</span>
+          <span className="font-black text-lg">{cartTotalItems} {cartTotalItems === 1 ? 'Item' : 'Items'}</span>
         ) : (
-          <span className="font-bold text-lg">Cart</span>
+          <span className="font-black text-lg">Cart</span>
         )}
       </button>
     </div>
