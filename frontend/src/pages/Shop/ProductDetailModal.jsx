@@ -63,7 +63,7 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
             </div>
             {/* Rating */}
             <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5">
-              <StarIcon className="w-3.5 h-3.5 text-amber-400" filled={true} /> 4.8 <span className="opacity-60 font-normal">({REVIEWS.length} reviews)</span>
+              <StarIcon className="w-3.5 h-3.5 text-amber-400" filled={true} /> {product.rating || 4.5} <span className="opacity-60 font-normal">({REVIEWS.length} reviews)</span>
             </div>
             {/* Close button */}
             <button onClick={onClose}

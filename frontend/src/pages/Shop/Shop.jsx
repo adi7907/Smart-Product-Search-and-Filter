@@ -31,6 +31,7 @@ export default function Shop({ customerAuth, onLogout, cart, setCart }) {
   const [selectedDiets, setSelectedDiets] = useState([]);
   const [selectedFestivals, setSelectedFestivals] = useState([]);
   const [maxPrice, setMaxPrice] = useState(2000);
+  const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState('featured');
 
   useEffect(() => {
@@ -46,8 +47,9 @@ export default function Shop({ customerAuth, onLogout, cart, setCart }) {
     const matchesDiet = selectedDiets.length === 0 || selectedDiets.includes(product.dietary_preference);
     const matchesFestival = selectedFestivals.length === 0 || selectedFestivals.includes(product.festival_need);
     const matchesPrice = product.price <= maxPrice;
+    const matchesRating = (product.rating || 4.5) >= minRating;
     
-    return matchesSearch && matchesCategory && matchesDiet && matchesFestival && matchesPrice;
+    return matchesSearch && matchesCategory && matchesDiet && matchesFestival && matchesPrice && matchesRating;
   });
 
   // Sorting Pipeline
@@ -65,6 +67,7 @@ export default function Shop({ customerAuth, onLogout, cart, setCart }) {
       selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets}
       selectedFestivals={selectedFestivals} setSelectedFestivals={setSelectedFestivals}
       maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+      minRating={minRating} setMinRating={setMinRating}
       sortBy={sortBy} setSortBy={setSortBy}
       filteredProducts={filteredProducts} products={products}
       customerAuth={customerAuth} onLogout={onLogout}

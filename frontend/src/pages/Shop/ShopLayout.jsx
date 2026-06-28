@@ -13,7 +13,9 @@ export default function ShopLayout({
   selectedCategories, setSelectedCategories,
   selectedDiets, setSelectedDiets,
   selectedFestivals, setSelectedFestivals,
-  maxPrice, setMaxPrice, sortBy, setSortBy,
+  maxPrice, setMaxPrice,
+  minRating, setMinRating,
+  sortBy, setSortBy,
   filteredProducts, products,
   customerAuth, onLogout,
   cart, setCart,
@@ -131,7 +133,9 @@ export default function ShopLayout({
                 selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}
                 selectedDiets={selectedDiets} setSelectedDiets={setSelectedDiets}
                 selectedFestivals={selectedFestivals} setSelectedFestivals={setSelectedFestivals}
-                maxPrice={maxPrice} setMaxPrice={setMaxPrice} products={products}
+                maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+                minRating={minRating} setMinRating={setMinRating}
+                products={products}
               />
             </div>
 
@@ -167,6 +171,7 @@ export default function ShopLayout({
               dietaryPref={selectedDiets.length ? selectedDiets[0] : ''} setDietaryPref={(v) => setSelectedDiets(v ? [v] : [])}
               festival={selectedFestivals.length ? selectedFestivals[0] : ''} setFestival={(v) => setSelectedFestivals(v ? [v] : [])}
               maxPrice={maxPrice} setMaxPrice={setMaxPrice}
+              minRating={minRating} setMinRating={setMinRating}
               sortBy={sortBy} setSortBy={setSortBy}
             />
             <ProductGrid filteredProducts={filteredProducts} addToCart={addToCart} customerAuth={customerAuth} showToast={showToast} />

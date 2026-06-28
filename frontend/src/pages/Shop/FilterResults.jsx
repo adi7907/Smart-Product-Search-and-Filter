@@ -1,3 +1,5 @@
+import { StarIcon } from '../../components/Icons';
+
 export default function FilterResults({
   filteredProducts = [],
   searchTerm, setSearchTerm,
@@ -5,13 +7,15 @@ export default function FilterResults({
   dietaryPref, setDietaryPref,
   festival, setFestival,
   maxPrice, setMaxPrice,
+  minRating, setMinRating,
   sortBy, setSortBy
 }) {
   const hasActiveFilters = searchTerm
     || (category && category !== 'All')
     || (dietaryPref && dietaryPref !== 'All')
     || (festival && festival !== 'All')
-    || maxPrice < 2000;
+    || maxPrice < 2000
+    || minRating > 0;
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -19,6 +23,7 @@ export default function FilterResults({
     setDietaryPref('');
     setFestival('');
     setMaxPrice(2000);
+    if (setMinRating) setMinRating(0);
   };
 
   const activeTags = [
@@ -27,6 +32,7 @@ export default function FilterResults({
     dietaryPref && dietaryPref !== 'All' && { label: dietaryPref, onRemove: () => setDietaryPref(''), color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
     festival && festival !== 'All' && { label: festival, onRemove: () => setFestival(''), color: 'bg-amber-50 text-amber-700 border-amber-200' },
     maxPrice < 2000 && { label: `Under ₹${maxPrice}`, onRemove: () => setMaxPrice(2000), color: 'bg-blue-50 text-blue-700 border-blue-200' },
+    minRating > 0 && { label: `${minRating}★ & above`, onRemove: () => setMinRating(0), color: 'bg-amber-100 text-amber-900 border-amber-300' },
   ].filter(Boolean);
 
   return (

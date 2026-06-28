@@ -71,7 +71,7 @@ export default function ProductGrid({ filteredProducts = [], addToCart, customer
               </button>
 
               <span className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white font-extrabold text-xs px-2.5 py-1 rounded-lg opacity-90 flex items-center gap-1">
-                <StarIcon className="w-3.5 h-3.5 text-amber-400" filled={true} /> 4.8
+                <StarIcon className="w-3.5 h-3.5 text-amber-400" filled={true} /> {p.rating || 4.5}
               </span>
             </div>
 
