@@ -6,12 +6,12 @@ const STATUS_STEPS = ['placed', 'preparing', 'out_for_delivery', 'delivered'];
 const STATUS_LABELS = {
   placed: { label: 'Order Placed', icon: '📋', color: 'text-blue-600' },
   preparing: { label: 'Preparing', icon: '👨‍🍳', color: 'text-amber-600' },
-  out_for_delivery: { label: 'Out for Delivery', icon: '🚴', color: 'text-orange-600' },
+  out_for_delivery: { label: 'Out for Delivery', icon: '🚴', color: 'text-teal-600' },
   delivered: { label: 'Delivered', icon: '✅', color: 'text-green-600' },
 };
 
 function resolveImage(url) {
-  if (!url) return 'https://placehold.co/48x48/fdf4f0/ea580c?text=🍽️';
+  if (!url) return 'https://placehold.co/48x48/fdf4f0/0f766e?text=🍽️';
   if (url.startsWith('http') || url.startsWith('/')) return url;
   return url;
 }
@@ -28,11 +28,11 @@ export default function OrdersPage({ customerAuth }) {
   if (!customerAuth) {
     return (
       <div className="min-h-screen bg-[#fdfbf7] flex items-center justify-center">
-        <div className="text-center p-8">
+        <div className="text-center p-5">
           <div className="text-6xl mb-4">🔒</div>
           <h2 className="text-2xl font-black text-stone-900 mb-2">Sign in to view orders</h2>
           <Link to="/customer-login" className="mt-4 inline-block px-6 py-3 rounded-xl font-bold text-white"
-            style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}>Sign In</Link>
+            style={{ background: 'linear-gradient(135deg,#0d9488,#0f766e)' }}>Sign In</Link>
         </div>
       </div>
     );
@@ -43,7 +43,7 @@ export default function OrdersPage({ customerAuth }) {
       {/* Header */}
       <div className="bg-white border-b border-stone-200 px-6 py-5 sticky top-0 z-40">
         <div className="max-w-3xl mx-auto flex items-center gap-4">
-          <Link to="/shop" className="text-stone-500 hover:text-orange-600 font-bold text-sm">← Back to Shop</Link>
+          <Link to="/shop" className="text-stone-500 hover:text-teal-600 font-bold text-sm">← Back to Shop</Link>
           <div className="flex-1 text-center">
             <h1 className="font-black text-stone-900 text-xl">My Orders</h1>
           </div>
@@ -57,8 +57,8 @@ export default function OrdersPage({ customerAuth }) {
             <div className="text-7xl mb-6">📦</div>
             <h2 className="text-2xl font-black text-stone-900 mb-2">No orders yet</h2>
             <p className="text-stone-500 mb-8">Start shopping and your orders will appear here.</p>
-            <Link to="/shop" className="px-8 py-4 rounded-2xl font-black text-white text-base inline-block shadow-lg"
-              style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}>
+            <Link to="/shop" className="px-8 py-2.5 rounded-2xl font-black text-white text-base inline-block shadow-lg"
+              style={{ background: 'linear-gradient(135deg,#0d9488,#0f766e)' }}>
               Shop Now 🛒
             </Link>
           </div>
@@ -70,7 +70,7 @@ export default function OrdersPage({ customerAuth }) {
               const statusInfo = STATUS_LABELS[order.status];
 
               return (
-                <div key={order.id} className="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+                <div key={order.id} className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
                   {/* Order Header */}
                   <div className="px-6 py-5 flex items-start justify-between gap-4">
                     <div>
@@ -86,9 +86,9 @@ export default function OrdersPage({ customerAuth }) {
                       <div className="text-xs text-stone-400 mt-0.5">{order.items.length} item{order.items.length !== 1 ? 's' : ''} · {order.paymentMethod?.toUpperCase()}</div>
                     </div>
                     <div className="text-right shrink-0">
-                      <div className="font-black text-orange-600 text-lg">₹{order.total}</div>
+                      <div className="font-black text-teal-600 text-lg">₹{order.total}</div>
                       <button onClick={() => setExpanded(isExpanded ? null : order.id)}
-                        className="text-xs font-bold text-stone-500 hover:text-orange-600 transition-colors cursor-pointer mt-1">
+                        className="text-xs font-bold text-stone-500 hover:text-teal-600 transition-colors cursor-pointer mt-1">
                         {isExpanded ? 'Hide ▲' : 'Details ▼'}
                       </button>
                     </div>
@@ -100,7 +100,7 @@ export default function OrdersPage({ customerAuth }) {
                       <div key={i} className="flex-shrink-0 text-center">
                         <img src={resolveImage(item.image_url)} alt={item.name}
                           className="w-12 h-12 rounded-xl object-cover bg-stone-100 border border-stone-200"
-                          onError={e => { e.target.src = 'https://placehold.co/48x48/fdf4f0/ea580c?text=🍽️'; }} />
+                          onError={e => { e.target.src = 'https://placehold.co/48x48/fdf4f0/0f766e?text=🍽️'; }} />
                         <div className="text-[9px] font-bold text-stone-500 mt-1 max-w-[48px] truncate">{item.name.split(' ')[0]}</div>
                       </div>
                     ))}
@@ -112,11 +112,11 @@ export default function OrdersPage({ customerAuth }) {
                       {STATUS_STEPS.map((s, i) => (
                         <div key={s} className="flex items-center flex-1">
                           <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${i <= statusIdx ? 'text-white' : 'bg-stone-200 text-stone-400'}`}
-                            style={i <= statusIdx ? { background: 'linear-gradient(135deg,#f97316,#ea580c)' } : {}}>
+                            style={i <= statusIdx ? { background: 'linear-gradient(135deg,#0d9488,#0f766e)' } : {}}>
                             {i < statusIdx ? '✓' : i + 1}
                           </div>
                           {i < STATUS_STEPS.length - 1 && (
-                            <div className={`h-0.5 flex-1 mx-1 rounded ${i < statusIdx ? 'bg-orange-500' : 'bg-stone-200'}`} />
+                            <div className={`h-0.5 flex-1 mx-1 rounded ${i < statusIdx ? 'bg-teal-500' : 'bg-stone-200'}`} />
                           )}
                         </div>
                       ))}
@@ -139,7 +139,7 @@ export default function OrdersPage({ customerAuth }) {
                             <div className="flex items-center gap-3">
                               <img src={resolveImage(item.image_url)} alt={item.name}
                                 className="w-10 h-10 rounded-xl object-cover bg-stone-100 border border-stone-200"
-                                onError={e => { e.target.src = 'https://placehold.co/40x40/fdf4f0/ea580c?text=🍽️'; }} />
+                                onError={e => { e.target.src = 'https://placehold.co/40x40/fdf4f0/0f766e?text=🍽️'; }} />
                               <div>
                                 <div className="font-bold text-stone-900 text-sm">{item.name}</div>
                                 <div className="text-stone-500 text-xs">₹{item.price} × {item.quantity}</div>
@@ -166,13 +166,13 @@ export default function OrdersPage({ customerAuth }) {
                           {order.discount > 0 && <div className="flex justify-between text-green-600 font-bold"><span>Discount ({order.coupon})</span><span>−₹{order.discount}</span></div>}
                           <div className="flex justify-between"><span>Delivery</span><span>{order.deliveryFee === 0 ? 'Free' : `₹${order.deliveryFee}`}</span></div>
                           <div className="flex justify-between"><span>GST (5%)</span><span>₹{order.gst}</span></div>
-                          <div className="flex justify-between font-black text-stone-900 text-base pt-1 border-t border-stone-200"><span>Total</span><span className="text-orange-600">₹{order.total}</span></div>
+                          <div className="flex justify-between font-black text-stone-900 text-base pt-1 border-t border-stone-200"><span>Total</span><span className="text-teal-600">₹{order.total}</span></div>
                         </div>
                       </div>
 
                       {/* Reorder */}
                       <Link to="/shop" className="block w-full py-3 text-center rounded-2xl font-black text-white text-sm cursor-pointer"
-                        style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}>
+                        style={{ background: 'linear-gradient(135deg,#0d9488,#0f766e)' }}>
                         🔁 Reorder
                       </Link>
                     </div>
@@ -186,3 +186,4 @@ export default function OrdersPage({ customerAuth }) {
     </div>
   );
 }
+

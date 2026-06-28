@@ -61,12 +61,12 @@ export default function SettingsPage({ customerAuth, onLogout }) {
         {/* Breadcrumbs & Title */}
         <div className="mb-8">
           <div className="flex items-center gap-2 text-xs font-bold text-stone-400 mb-2">
-            <Link to="/shop" className="hover:text-orange-600">Home</Link>
+            <Link to="/shop" className="hover:text-teal-600">Home</Link>
             <span>/</span>
             <span className="text-stone-700">Account Settings</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center shadow-xs">
+            <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-600 flex items-center justify-center shadow-xs">
               <SettingsIcon className="w-6 h-6 stroke-[2.5]" />
             </div>
             <div>
@@ -77,10 +77,10 @@ export default function SettingsPage({ customerAuth, onLogout }) {
         </div>
 
         {/* Layout Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-5 items-start">
           
           {/* Sidebar Tabs */}
-          <div className="bg-white rounded-3xl p-3 border border-stone-200/80 shadow-sm space-y-1">
+          <div className="bg-white rounded-2xl p-3 border border-stone-200/80 shadow-sm space-y-1">
             {tabs.map((t) => {
               const Icon = t.icon;
               const isActive = activeTab === t.id;
@@ -90,14 +90,14 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                   onClick={() => setActiveTab(t.id)}
                   className={`w-full text-left p-3.5 rounded-2xl transition-all flex items-center gap-3 cursor-pointer ${
                     isActive
-                      ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/20 font-extrabold'
+                      ? 'bg-gradient-to-r from-teal-600 to-amber-600 text-white shadow-md shadow-teal-500/20 font-extrabold'
                       : 'text-stone-600 hover:bg-stone-100/80 font-bold'
                   }`}
                 >
                   <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-white' : 'text-stone-400'}`} />
                   <div className="min-w-0 flex-1">
                     <div className="text-sm leading-snug">{t.label}</div>
-                    <div className={`text-[11px] leading-tight truncate ${isActive ? 'text-orange-100' : 'text-stone-400 font-normal'}`}>
+                    <div className={`text-[11px] leading-tight truncate ${isActive ? 'text-teal-100' : 'text-stone-400 font-normal'}`}>
                       {t.desc}
                     </div>
                   </div>
@@ -107,7 +107,7 @@ export default function SettingsPage({ customerAuth, onLogout }) {
           </div>
 
           {/* Tab Content Panel */}
-          <div className="md:col-span-3 bg-white rounded-3xl p-6 md:p-8 border border-stone-200/80 shadow-sm animate-fade-in">
+          <div className="md:col-span-3 bg-white rounded-2xl p-6 md:p-5 border border-stone-200/80 shadow-sm animate-fade-in">
             
             {/* 1. Notifications Tab */}
             {activeTab === 'notifications' && (
@@ -184,8 +184,8 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                   <div className="pt-6">
                     <h4 className="font-extrabold text-stone-800 text-sm mb-3">Change Security PIN / Password</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md">
-                      <input type="password" placeholder="Current Password" className="px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm outline-none focus:border-orange-500" />
-                      <input type="password" placeholder="New Password" className="px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm outline-none focus:border-orange-500" />
+                      <input type="password" placeholder="Current Password" className="px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm outline-none focus:border-teal-500" />
+                      <input type="password" placeholder="New Password" className="px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm outline-none focus:border-teal-500" />
                     </div>
                     <button onClick={() => showToast('Password updated successfully 🔒', 'success')} className="mt-3 px-5 py-2.5 bg-stone-900 text-white font-extrabold text-xs rounded-xl hover:bg-stone-800 cursor-pointer transition-colors">
                       Update Password
@@ -209,7 +209,7 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                     <h4 className="font-extrabold text-stone-800 text-sm mb-3">Color Theme Preference</h4>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       {[
-                        { id: 'light', label: '☀️ Cozy Warm (Default)', desc: 'Warm ivory & orange accents' },
+                        { id: 'light', label: '☀️ Cozy Warm (Default)', desc: 'Warm ivory & teal accents' },
                         { id: 'contrast', label: '🔲 High Contrast', desc: 'Sharper borders & bold text' },
                         { id: 'system', label: '💻 Auto System', desc: 'Sync with device display' }
                       ].map((th) => (
@@ -218,7 +218,7 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                           onClick={() => updateSetting('appTheme', th.id)}
                           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                             settings.appTheme === th.id
-                              ? 'border-orange-500 bg-orange-50/50 shadow-xs ring-2 ring-orange-500/20'
+                              ? 'border-teal-500 bg-teal-50/50 shadow-xs ring-2 ring-teal-500/20'
                               : 'border-stone-200 hover:bg-stone-50'
                           }`}
                         >
@@ -277,7 +277,7 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                           onClick={() => updateSetting('language', lang.code)}
                           className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
                             settings.language === lang.code
-                              ? 'border-orange-500 bg-orange-50/60 shadow-xs'
+                              ? 'border-teal-500 bg-teal-50/60 shadow-xs'
                               : 'border-stone-200 hover:bg-stone-50'
                           }`}
                         >
@@ -285,7 +285,7 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                             <div className="font-extrabold text-stone-900 text-sm">{lang.native}</div>
                             <div className="text-[11px] text-stone-400 font-semibold">{lang.label}</div>
                           </div>
-                          {settings.language === lang.code && <span className="text-orange-600 font-bold text-sm">✓</span>}
+                          {settings.language === lang.code && <span className="text-teal-600 font-bold text-sm">✓</span>}
                         </button>
                       ))}
                     </div>
@@ -327,9 +327,9 @@ export default function SettingsPage({ customerAuth, onLogout }) {
                         type="text"
                         value={settings.savedUpi}
                         onChange={(e) => updateSetting('savedUpi', e.target.value)}
-                        className="flex-1 px-4 py-2 bg-stone-50 border border-stone-200 rounded-xl font-bold text-sm text-stone-800 outline-none focus:border-orange-500"
+                        className="flex-1 px-4 py-2 bg-stone-50 border border-stone-200 rounded-xl font-bold text-sm text-stone-800 outline-none focus:border-teal-500"
                       />
-                      <button onClick={() => showToast('Default UPI verified and saved ✅', 'success')} className="px-4 py-2 bg-orange-600 text-white font-extrabold text-xs rounded-xl hover:bg-orange-700 cursor-pointer">
+                      <button onClick={() => showToast('Default UPI verified and saved ✅', 'success')} className="px-4 py-2 bg-teal-600 text-white font-extrabold text-xs rounded-xl hover:bg-teal-700 cursor-pointer">
                         Save
                       </button>
                     </div>
@@ -422,7 +422,7 @@ function Toggle({ checked, onChange }) {
       type="button"
       onClick={() => onChange(!checked)}
       className={`w-12 h-6.5 rounded-full p-0.5 transition-colors duration-200 ease-in-out cursor-pointer relative shrink-0 ${
-        checked ? 'bg-orange-600' : 'bg-stone-300'
+        checked ? 'bg-teal-600' : 'bg-stone-300'
       }`}
     >
       <div
@@ -433,3 +433,4 @@ function Toggle({ checked, onChange }) {
     </button>
   );
 }
+

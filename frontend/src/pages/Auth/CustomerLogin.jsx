@@ -59,44 +59,44 @@ export default function CustomerLogin({ setCustomerAuth }) {
     <div className="min-h-screen flex" style={{ fontFamily: "'Inter', sans-serif" }}>
       {/* Left decorative panel */}
       <div className="hidden lg:flex flex-col justify-between w-[46%] relative overflow-hidden"
-        style={{ background: 'linear-gradient(145deg, #f97316 0%, #ea580c 40%, #c2410c 100%)' }}>
+        style={{ background: 'linear-gradient(145deg, #0d9488 0%, #0f766e 40%, #c2410c 100%)' }}>
         {/* Subtle pattern */}
         <div className="absolute inset-0 opacity-[0.07]"
           style={{ backgroundImage: 'radial-gradient(circle, white 1.5px, transparent 1.5px)', backgroundSize: '28px 28px' }} />
         
-        <div className="relative z-10 p-12">
+        <div className="relative z-10 p-8">
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="Sharadha" className="w-14 h-14 object-contain drop-shadow-lg" />
             <div>
               <div className="text-white font-black text-2xl tracking-tight leading-none">SHARADHA</div>
-              <div className="text-orange-200 text-xs font-bold tracking-widest">STORES & SAVORIES</div>
+              <div className="text-teal-200 text-xs font-bold tracking-widest">STORES & SAVORIES</div>
             </div>
           </div>
         </div>
 
-        <div className="relative z-10 p-12">
+        <div className="relative z-10 p-8">
           <blockquote className="text-white/90 text-3xl font-black leading-snug mb-6">
             Authentic flavors,<br />crafted with love.
           </blockquote>
-          <p className="text-orange-100/80 text-sm font-medium leading-relaxed max-w-xs">
+          <p className="text-teal-100/80 text-sm font-medium leading-relaxed max-w-xs">
             From our kitchen to your table — traditional pickles, handcrafted sweets, and aromatic spices made the authentic way.
           </p>
           <div className="mt-10 flex gap-8">
             {[['20+', 'Products'], ['100%', 'Natural'], ['Pure', 'Quality']].map(([val, lbl]) => (
               <div key={lbl}>
                 <div className="text-white font-black text-xl">{val}</div>
-                <div className="text-orange-200 text-xs font-semibold">{lbl}</div>
+                <div className="text-teal-200 text-xs font-semibold">{lbl}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="relative z-10 p-12">
+        <div className="relative z-10 p-8">
           <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
             <span className="text-3xl">🎁</span>
             <div>
               <div className="text-white font-bold text-sm">Demo account available</div>
-              <div className="text-orange-100 text-xs font-medium">demo@sharadha.com · demo123</div>
+              <div className="text-teal-100 text-xs font-medium">demo@sharadha.com · demo123</div>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function CustomerLogin({ setCustomerAuth }) {
             <img src="/logo.png" alt="Sharadha" className="w-10 h-10 object-contain" />
             <div>
               <div className="font-black text-lg text-stone-900 leading-none">SHARADHA</div>
-              <div className="text-orange-600 text-[10px] font-bold tracking-widest">STORES & SAVORIES</div>
+              <div className="text-teal-600 text-[10px] font-bold tracking-widest">STORES & SAVORIES</div>
             </div>
           </div>
 
@@ -135,7 +135,7 @@ export default function CustomerLogin({ setCustomerAuth }) {
                 onClick={() => { setTab(key); setError(''); }}
                 className={`flex-1 py-2.5 rounded-xl text-sm font-extrabold transition-all cursor-pointer ${
                   tab === key
-                    ? 'bg-white text-orange-600 shadow-sm'
+                    ? 'bg-white text-teal-600 shadow-sm'
                     : 'text-stone-500 hover:text-stone-700'
                 }`}
               >
@@ -158,10 +158,10 @@ export default function CustomerLogin({ setCustomerAuth }) {
                     value={form.password}
                     onChange={update('password')}
                     placeholder="Your password"
-                    className="w-full pl-9 pr-12 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-orange-500/40 focus:border-orange-400 outline-none transition-all shadow-sm"
+                    className="w-full pl-9 pr-12 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-teal-500/40 focus:border-teal-400 outline-none transition-all shadow-sm"
                   />
                   <button type="button" onClick={() => setShowPass(s => !s)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-orange-600 text-xs font-bold cursor-pointer">
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-teal-600 text-xs font-bold cursor-pointer">
                     {showPass ? 'Hide' : 'Show'}
                   </button>
                 </div>
@@ -171,7 +171,7 @@ export default function CustomerLogin({ setCustomerAuth }) {
 
               <button type="submit" disabled={loading}
                 className="w-full py-3.5 rounded-xl font-black text-sm text-white transition-all hover:scale-[1.01] active:scale-100 cursor-pointer disabled:opacity-70 shadow-lg mt-2"
-                style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}>
+                style={{ background: 'linear-gradient(135deg, #0d9488, #0f766e)' }}>
                 {loading ? <Spinner label="Signing in..." /> : '→ Sign In'}
               </button>
 
@@ -202,7 +202,7 @@ export default function CustomerLogin({ setCustomerAuth }) {
 
           {/* Footer */}
           <div className="mt-8 pt-6 border-t border-stone-200 text-center">
-            <Link to="/shop" className="text-stone-400 hover:text-orange-600 text-xs font-bold transition-colors">
+            <Link to="/shop" className="text-stone-400 hover:text-teal-600 text-xs font-bold transition-colors">
               ← Continue as guest
             </Link>
           </div>
@@ -219,7 +219,7 @@ function InputField({ label, type, value, onChange, placeholder, icon }) {
       <div className="relative">
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm pointer-events-none">{icon}</span>
         <input type={type} required value={value} onChange={onChange} placeholder={placeholder}
-          className="w-full pl-9 pr-4 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-orange-500/40 focus:border-orange-400 outline-none transition-all shadow-sm" />
+          className="w-full pl-9 pr-4 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-teal-500/40 focus:border-teal-400 outline-none transition-all shadow-sm" />
       </div>
     </div>
   );
@@ -232,9 +232,9 @@ function PasswordField({ label, value, onChange, placeholder }) {
       <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1.5">{label}</label>
       <div className="relative">
         <input type={show ? 'text' : 'password'} required value={value} onChange={onChange} placeholder={placeholder}
-          className="w-full pl-3 pr-10 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-orange-500/40 focus:border-orange-400 outline-none transition-all shadow-sm" />
+          className="w-full pl-3 pr-10 py-3 bg-white border border-stone-200 rounded-xl text-sm font-medium text-stone-800 placeholder:text-stone-400 focus:ring-2 focus:ring-teal-500/40 focus:border-teal-400 outline-none transition-all shadow-sm" />
         <button type="button" onClick={() => setShow(s => !s)}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-orange-600 text-[10px] font-bold cursor-pointer">
+          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-teal-600 text-[10px] font-bold cursor-pointer">
           {show ? 'Hide' : 'Show'}
         </button>
       </div>
@@ -259,3 +259,4 @@ function Spinner({ label }) {
     </span>
   );
 }
+

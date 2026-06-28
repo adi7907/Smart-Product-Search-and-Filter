@@ -32,57 +32,57 @@ export default function FilterSidebar({
   ];
 
   return (
-    <aside className="w-full flex flex-col gap-4 shrink-0">
-      <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
+    <aside className="w-full flex flex-col gap-3 shrink-0">
+      <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         {/* Header */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2.5">
-            <FilterIcon className="w-5 h-5 text-orange-600" />
-            <h2 className="text-base font-black text-stone-900">Filters</h2>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <FilterIcon className="w-4 h-4 text-teal-600" />
+            <h2 className="text-sm font-bold text-slate-800">Filter Products</h2>
             {totalActive > 0 && (
-              <span className="w-5 h-5 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center">
+              <span className="w-4 h-4 bg-teal-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 {totalActive}
               </span>
             )}
           </div>
           {totalActive > 0 && (
             <button onClick={clearAll}
-              className="text-xs font-bold text-orange-500 hover:text-orange-700 cursor-pointer bg-orange-50 px-3 py-1 rounded-xl border border-orange-200 transition-colors">
-              Clear All
+              className="text-[11px] font-bold text-teal-600 hover:text-teal-700 cursor-pointer bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200 transition-colors">
+              Reset
             </button>
           )}
         </div>
 
-        <div className="space-y-1">
+        <div className="space-y-4">
           {/* Categories */}
-          <div className="border-b border-stone-100 pb-4 mb-4">
+          <div className="border-b border-slate-100 pb-3">
             <CheckboxGroup title="Categories" options={categories} selectedState={selectedCategories} setSelectedState={setSelectedCategories} />
           </div>
 
-          {/* NEW: Minimum Rating Filter */}
-          <div className="border-b border-stone-100 pb-4 mb-4">
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="font-extrabold text-stone-800 text-sm flex items-center gap-1.5">
-                <StarIcon className="w-4 h-4 text-amber-500" /> Minimum Rating
+          {/* Minimum Rating Filter */}
+          <div className="border-b border-slate-100 pb-3">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-bold text-slate-800 text-xs flex items-center gap-1">
+                <StarIcon className="w-3.5 h-3.5 text-amber-400" /> Rating
               </h3>
               {minRating > 0 && (
-                <button onClick={() => setMinRating(0)} className="text-[11px] font-bold text-orange-500 hover:text-orange-700 cursor-pointer transition-colors">
+                <button onClick={() => setMinRating(0)} className="text-[10px] font-bold text-teal-600 hover:text-teal-700 cursor-pointer transition-colors">
                   Clear
                 </button>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-1.5">
+            <div className="grid grid-cols-2 gap-1">
               {ratingOptions.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => setMinRating(opt.value)}
-                  className={`py-2 px-2.5 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1 border ${
+                  className={`py-1.5 px-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer flex items-center justify-center gap-1 border ${
                     minRating === opt.value
-                      ? 'bg-amber-500 text-white border-amber-500 shadow-xs'
-                      : 'bg-stone-50 text-stone-600 border-stone-200 hover:border-amber-300 hover:bg-amber-50/50'
+                      ? 'bg-teal-600 text-white border-teal-600 shadow-xs'
+                      : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-teal-400 hover:bg-teal-50/40'
                   }`}
                 >
-                  {opt.value > 0 && <StarIcon className="w-3.5 h-3.5" filled={true} />}
+                  {opt.value > 0 && <StarIcon className="w-3 h-3" filled={true} />}
                   <span>{opt.label}</span>
                 </button>
               ))}
@@ -90,38 +90,38 @@ export default function FilterSidebar({
           </div>
 
           {/* Dietary Needs */}
-          <div className="border-b border-stone-100 pb-4 mb-4">
+          <div className="border-b border-slate-100 pb-3">
             <CheckboxGroup title="Dietary Needs" options={diets} selectedState={selectedDiets} setSelectedState={setSelectedDiets} />
           </div>
 
           {/* Festival / Occasion */}
-          <div className="border-b border-stone-100 pb-4 mb-4">
-            <CheckboxGroup title="Festival / Occasion" options={festivals} selectedState={selectedFestivals} setSelectedState={setSelectedFestivals} />
+          <div className="border-b border-slate-100 pb-3">
+            <CheckboxGroup title="Occasion" options={festivals} selectedState={selectedFestivals} setSelectedState={setSelectedFestivals} />
           </div>
 
           {/* Price Range */}
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-extrabold text-stone-800 text-sm">Max Price</h3>
-              <div className="flex items-center gap-1 bg-orange-50 border border-orange-200 px-3 py-1 rounded-xl">
-                <span className="text-orange-600 font-black text-sm">₹</span>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-bold text-slate-800 text-xs">Max Price</h3>
+              <div className="flex items-center gap-0.5 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-md">
+                <span className="text-teal-600 font-bold text-xs">₹</span>
                 <input
                   type="number"
                   min="0" max="2000"
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-14 bg-transparent text-right font-black text-orange-700 text-sm focus:outline-none appearance-none"
+                  className="w-12 bg-transparent text-right font-bold text-teal-800 text-xs focus:outline-none appearance-none"
                 />
               </div>
             </div>
             <input
               type="range" min="0" max="2000" step="50"
-              className="w-full h-2 rounded-full appearance-none cursor-pointer"
-              style={{ accentColor: '#f97316' }}
+              className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
+              style={{ accentColor: '#0d9488' }}
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
             />
-            <div className="flex justify-between text-xs text-stone-400 font-medium mt-1">
+            <div className="flex justify-between text-[10px] text-slate-400 font-medium mt-1">
               <span>₹0</span><span>₹2000</span>
             </div>
           </div>
