@@ -22,7 +22,7 @@ function fuzzyMatch(str = '', query = '') {
   return (matchCount / queryChars.size) >= 0.75 && Math.abs(cleanStr.length - cleanQuery.length) <= 5;
 }
 
-export default function Shop({ customerAuth, onLogout }) {
+export default function Shop({ customerAuth, onLogout, cart, setCart }) {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -68,6 +68,7 @@ export default function Shop({ customerAuth, onLogout }) {
       sortBy={sortBy} setSortBy={setSortBy}
       filteredProducts={filteredProducts} products={products}
       customerAuth={customerAuth} onLogout={onLogout}
+      cart={cart} setCart={setCart}
     />
   );
 }
