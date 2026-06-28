@@ -121,17 +121,11 @@ export default function CartPanel({ isOpen, onClose, cart, setCart, customerAuth
 
             {/* CTA */}
             <div className="px-5 pb-5">
-              {subtotal < 99 ? (
-                <div className="w-full py-3.5 rounded-2xl text-center text-sm font-black text-stone-400 bg-stone-100 border border-stone-200">
-                  Min. order ₹99 required
-                </div>
-              ) : (
-                <button onClick={handleCheckout}
-                  className="w-full py-4 rounded-2xl font-black text-white text-base shadow-lg cursor-pointer hover:scale-[1.01] active:scale-100 transition-all"
-                  style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}>
-                  🚀 Proceed to Checkout →
-                </button>
-              )}
+              <button onClick={handleCheckout}
+                className="w-full py-4 rounded-2xl font-black text-white text-base shadow-lg cursor-pointer hover:scale-[1.01] active:scale-100 transition-all"
+                style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)' }}>
+                🚀 Proceed to Checkout →
+              </button>
             </div>
           </div>
         )}
