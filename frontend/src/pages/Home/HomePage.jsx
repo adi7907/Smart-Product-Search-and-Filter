@@ -9,18 +9,7 @@ const CATEGORIES = [
   { name: 'Pantry', emoji: '🫙', desc: 'Pure ghee & staples', color: '#f0fdf4', border: '#86efac', img: '/products/ghee.png' },
 ];
 
-const FEATURES = [
-  { icon: '✨', title: 'Authentic Craft', desc: 'Every item prepared fresh using timeless heritage recipes.' },
-  { icon: '🌿', title: '100% Natural', desc: 'No preservatives, no artificial flavours. Pure ingredients only.' },
-  { icon: '🚚', title: 'Fast Delivery', desc: 'Fresh orders dispatched within 24 hours, delivered to your door.' },
-  { icon: '🛡️', title: 'Pure Quality', desc: 'Strict hygiene standards and selected ingredients in every batch.' },
-];
 
-const TESTIMONIALS = [
-  { name: 'Priya R.', city: 'Bangalore', text: 'The mango pickle is exactly like grandma used to make! Amazing quality and super fast delivery.', stars: 5 },
-  { name: 'Ramesh K.', city: 'Chennai', text: 'Madras filter coffee pouch is a game changer. Authentic South Indian taste at home!', stars: 5 },
-  { name: 'Anita S.', city: 'Delhi', text: 'Kaju Katli is so fresh and soft. Perfect for Diwali gifting. Ordered for my whole family!', stars: 5 },
-];
 
 export default function HomePage({ customerAuth }) {
   return (
@@ -39,7 +28,6 @@ export default function HomePage({ customerAuth }) {
           <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-stone-600">
             <Link to="/" className="hover:text-teal-600 transition-colors">Home</Link>
             <Link to="/shop" className="hover:text-teal-600 transition-colors">Shop</Link>
-            <a href="#features" className="hover:text-teal-600 transition-colors">About</a>
             <a href="#contact" className="hover:text-teal-600 transition-colors">Contact</a>
           </nav>
           <div className="flex items-center gap-3">
@@ -99,15 +87,7 @@ export default function HomePage({ customerAuth }) {
                 Create Account
               </Link>
             </div>
-            {/* Trust stats */}
-            <div className="flex gap-8 mt-12 justify-center lg:justify-start">
-              {[['500+', 'Happy Customers'], ['20+', 'Products'], ['4.8★', 'Avg Rating']].map(([val, lbl]) => (
-                <div key={lbl} className="text-center lg:text-left">
-                  <div className="text-2xl font-black text-teal-600">{val}</div>
-                  <div className="text-xs font-semibold text-stone-500">{lbl}</div>
-                </div>
-              ))}
-            </div>
+
           </div>
 
           {/* Hero image collage */}
@@ -158,26 +138,7 @@ export default function HomePage({ customerAuth }) {
         </div>
       </section>
 
-      {/* ─── Features ─── */}
-      <section id="features" className="bg-stone-900 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-teal-400 font-extrabold text-sm tracking-widest uppercase mb-2">Why Choose Us</p>
-            <h2 className="text-4xl font-black text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              The Sharadha Difference
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {FEATURES.map((f) => (
-              <div key={f.title} className="bg-stone-800 rounded-2xl p-7 border border-stone-700 hover:border-teal-500/50 transition-all hover:-translate-y-1">
-                <div className="text-4xl mb-4">{f.icon}</div>
-                <h3 className="font-black text-white text-lg mb-2">{f.title}</h3>
-                <p className="text-stone-400 text-sm font-medium leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* ─── Featured Products strip ─── */}
       <section className="max-w-7xl mx-auto px-6 py-12">
@@ -211,7 +172,6 @@ export default function HomePage({ customerAuth }) {
                 <h3 className="font-bold text-stone-900 text-sm mb-1">{p.name}</h3>
                 <div className="flex items-center justify-between">
                   <span className="font-black text-teal-600">{p.price}</span>
-                  <span className="text-[10px] font-bold text-stone-400">⭐ 4.8</span>
                 </div>
               </div>
             </Link>
@@ -219,34 +179,7 @@ export default function HomePage({ customerAuth }) {
         </div>
       </section>
 
-      {/* ─── Testimonials ─── */}
-      <section className="bg-teal-50 border-y border-teal-100 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-teal-600 font-extrabold text-sm tracking-widest uppercase mb-2">Testimonials</p>
-            <h2 className="text-4xl font-black text-stone-900" style={{ fontFamily: "'Outfit', sans-serif" }}>What our customers say</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t) => (
-              <div key={t.name} className="bg-white rounded-2xl p-7 shadow-sm border border-teal-100 hover:shadow-md transition-all">
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.stars }).map((_, i) => <span key={i} className="text-teal-400 text-base">★</span>)}
-                </div>
-                <p className="text-stone-700 text-sm font-medium leading-relaxed mb-6 italic">"{t.text}"</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-stone-100">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-400 to-teal-400 flex items-center justify-center text-white font-black text-sm">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-bold text-stone-900 text-sm">{t.name}</div>
-                    <div className="text-stone-400 text-xs">{t.city}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* ─── CTA Banner ─── */}
       <section className="max-w-7xl mx-auto px-6 py-12">
@@ -308,8 +241,7 @@ export default function HomePage({ customerAuth }) {
               </ul>
             </div>
           </div>
-          <div className="pt-8 border-t border-stone-800 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-stone-500 text-sm font-medium">© 2025 Sharadha Stores & Savories. All rights reserved.</p>
+          <div className="pt-8 border-t border-stone-800 flex justify-center">
             <div className="flex items-center gap-2 text-stone-500 text-sm">
               <span>Made with</span><span className="text-red-400">❤️</span><span>in India</span>
             </div>
