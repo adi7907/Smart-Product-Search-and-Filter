@@ -11,6 +11,7 @@ import CheckoutFlow from './pages/Checkout/CheckoutFlow';
 import OrdersPage from './pages/Orders/OrdersPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import WishlistPage from './pages/Wishlist/WishlistPage';
+import SettingsPage from './pages/Settings/SettingsPage';
 import { API_URL } from './config';
 
 export default function App() {
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/orders" element={<OrdersPage customerAuth={customerAuth} />} />
           <Route path="/profile" element={<ProfilePage customerAuth={customerAuth} onLogout={handleCustomerLogout} />} />
           <Route path="/wishlist" element={<WishlistPage customerAuth={customerAuth} />} />
+          <Route path="/settings" element={<SettingsPage customerAuth={customerAuth} onLogout={handleCustomerLogout} />} />
           <Route path="/customer-login" element={<CustomerLogin setCustomerAuth={setCustomerAuth} />} />
           <Route path="/login" element={<LoginScreen setIsAuthenticated={setIsAuthenticated} />} />
           <Route

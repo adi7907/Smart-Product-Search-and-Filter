@@ -1,11 +1,9 @@
 export const ScanSearchIcon = ({ className = "w-5 h-5" }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-    {/* Corners */}
     <path d="M4 8V6a2 2 0 0 1 2-2h2" />
     <path d="M16 4h2a2 2 0 0 1 2 2v2" />
     <path d="M20 16v2a2 2 0 0 1-2 2h-2" />
     <path d="M8 20H6a2 2 0 0 1-2-2v-2" />
-    {/* Search icon inside */}
     <circle cx="11.5" cy="11.5" r="3.5" />
     <path d="M14 14l3.5 3.5" />
   </svg>
@@ -109,5 +107,40 @@ export const MenuIcon = ({ className = "w-5 h-5" }) => (
     <line x1="4" x2="20" y1="12" y2="12" />
     <line x1="4" x2="20" y1="6" y2="6" />
     <line x1="4" x2="20" y1="18" y2="18" />
+  </svg>
+);
+
+export const SettingsIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+export const BellIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+  </svg>
+);
+
+export const ShieldIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z" />
+  </svg>
+);
+
+export const GlobeIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+    <path d="M2 12h20" />
+  </svg>
+);
+
+export const CreditCardIcon = ({ className = "w-5 h-5" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect width="20" height="14" x="2" y="5" rx="2" />
+    <line x1="2" x2="22" y1="10" y2="10" />
   </svg>
 );

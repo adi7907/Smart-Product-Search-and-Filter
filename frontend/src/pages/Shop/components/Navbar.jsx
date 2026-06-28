@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../../hooks/useWishlist';
-import { ScanSearchIcon, SearchIcon, HeartIcon, CartIcon, UserIcon, PackageIcon, HomeIcon, LogOutIcon, MenuIcon, CloseIcon } from '../../../components/Icons';
+import { ScanSearchIcon, SearchIcon, HeartIcon, CartIcon, UserIcon, PackageIcon, HomeIcon, LogOutIcon, MenuIcon, CloseIcon, SettingsIcon } from '../../../components/Icons';
 
 export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearchTerm, isProcessingVision, customerAuth, onLogout }) {
   const { getCount } = useWishlist();
@@ -103,6 +103,7 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                     { icon: <UserIcon className="w-4 h-4 text-stone-500 group-hover:text-orange-600" />, label: 'My Profile', to: '/profile' },
                     { icon: <PackageIcon className="w-4 h-4 text-stone-500 group-hover:text-orange-600" />, label: 'My Orders', to: '/orders' },
                     { icon: <HeartIcon className="w-4 h-4 text-stone-500 group-hover:text-orange-600" />, label: 'Wishlist', to: '/wishlist' },
+                    { icon: <SettingsIcon className="w-4 h-4 text-stone-500 group-hover:text-orange-600" />, label: 'App Settings', to: '/settings' },
                     { icon: <HomeIcon className="w-4 h-4 text-stone-500 group-hover:text-orange-600" />, label: 'Home', to: '/' },
                   ].map(item => (
                     <Link key={item.to} to={item.to} onClick={() => setDropdownOpen(false)}
@@ -168,7 +169,8 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                 <Link to="/profile" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 p-3 bg-stone-50 rounded-2xl text-sm font-bold text-stone-700"><UserIcon className="w-4 h-4 text-stone-500" /> Profile</Link>
                 <Link to="/orders" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 p-3 bg-stone-50 rounded-2xl text-sm font-bold text-stone-700"><PackageIcon className="w-4 h-4 text-stone-500" /> Orders</Link>
                 <Link to="/wishlist" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 p-3 bg-stone-50 rounded-2xl text-sm font-bold text-stone-700"><HeartIcon className="w-4 h-4 text-stone-500" /> Wishlist ({wishlistCount})</Link>
-                <button onClick={handleLogout} className="flex items-center gap-2 p-3 bg-red-50 rounded-2xl text-sm font-bold text-red-600 cursor-pointer"><LogOutIcon className="w-4 h-4 text-red-500" /> Sign Out</button>
+                <Link to="/settings" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 p-3 bg-stone-50 rounded-2xl text-sm font-bold text-stone-700"><SettingsIcon className="w-4 h-4 text-stone-500" /> Settings</Link>
+                <button onClick={handleLogout} className="col-span-2 flex items-center justify-center gap-2 p-3 bg-red-50 rounded-2xl text-sm font-bold text-red-600 cursor-pointer"><LogOutIcon className="w-4 h-4 text-red-500" /> Sign Out</button>
               </>
             ) : (
               <Link to="/customer-login" onClick={() => setMobileMenuOpen(false)} className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-2xl text-sm font-black text-white" style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}>
