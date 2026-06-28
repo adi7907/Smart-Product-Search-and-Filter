@@ -113,6 +113,7 @@ export default function ProductGrid({ filteredProducts = [], addToCart, customer
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         product={selectedProduct}
+        addToCart={addToCart}
       />
     </>
   );

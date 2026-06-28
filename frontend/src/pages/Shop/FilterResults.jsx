@@ -1,15 +1,17 @@
-export default function FilterResults({ 
-  filteredProducts = [], 
-  searchTerm, setSearchTerm, 
-  category, setCategory, 
-  dietaryPref, setDietaryPref, 
+export default function FilterResults({
+  filteredProducts = [],
+  searchTerm, setSearchTerm,
+  category, setCategory,
+  dietaryPref, setDietaryPref,
   festival, setFestival,
   maxPrice, setMaxPrice,
   sortBy, setSortBy
 }) {
-  
-  // A helper function to check if ANY filters are active
-  const hasActiveFilters = searchTerm || (category && category !== 'All') || (dietaryPref && dietaryPref !== 'All') || (festival && festival !== 'All') || maxPrice < 2000;
+  const hasActiveFilters = searchTerm
+    || (category && category !== 'All')
+    || (dietaryPref && dietaryPref !== 'All')
+    || (festival && festival !== 'All')
+    || maxPrice < 2000;
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -19,64 +21,53 @@ export default function FilterResults({
     setMaxPrice(2000);
   };
 
+  const activeTags = [
+    searchTerm && { label: `"${searchTerm}"`, onRemove: () => setSearchTerm(''), color: 'bg-stone-100 text-stone-700 border-stone-300' },
+    category && category !== 'All' && { label: category, onRemove: () => setCategory(''), color: 'bg-orange-50 text-orange-700 border-orange-200' },
+    dietaryPref && dietaryPref !== 'All' && { label: dietaryPref, onRemove: () => setDietaryPref(''), color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+    festival && festival !== 'All' && { label: festival, onRemove: () => setFestival(''), color: 'bg-amber-50 text-amber-700 border-amber-200' },
+    maxPrice < 2000 && { label: `Under ₹${maxPrice}`, onRemove: () => setMaxPrice(2000), color: 'bg-blue-50 text-blue-700 border-blue-200' },
+  ].filter(Boolean);
+
   return (
-    <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border dark:border-slate-800 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-      
-      <div className="flex items-center gap-4">
-        <p className="text-slate-500 dark:text-slate-400 font-medium">
-          Showing <span className="font-extrabold text-teal-700 dark:text-teal-400 text-lg">{filteredProducts.length}</span> items
-        </p>
-      </div>
+    <div className="bg-white rounded-2xl border border-stone-200 shadow-sm mb-5 px-5 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      {/* Count */}
+      <p className="text-stone-600 font-semibold text-sm shrink-0">
+        Showing <span className="font-black text-orange-600 text-base">{filteredProducts.length}</span>
+        <span className="text-stone-400"> items</span>
+      </p>
 
-      <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
-        <label htmlFor="sort-select" className="text-xs font-bold text-slate-400 uppercase">Sort:</label>
-        <select 
-          id="sort-select"
-          value={sortBy || 'featured'} 
-          onChange={(e) => setSortBy && setSortBy(e.target.value)}
-          className="bg-slate-50 dark:bg-slate-800 border dark:border-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-teal-500"
-        >
-          <option value="featured">✨ Featured</option>
-          <option value="price-asc">💵 Price: Low to High</option>
-          <option value="price-desc">💰 Price: High to Low</option>
-          <option value="name-asc">🔤 Name: A to Z</option>
-        </select>
-      </div>
-
-      {/* Active Filter Tags */}
-      {hasActiveFilters && (
-        <div className="flex flex-wrap gap-2 items-center">
-          <span className="text-xs font-bold text-slate-400 uppercase mr-2">Active Filters:</span>
-          
-          {searchTerm && (
-            <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-full flex items-center gap-2">
-              "{searchTerm}" <button onClick={() => setSearchTerm('')} className="hover:text-indigo-900">✕</button>
+      {/* Active filter pills */}
+      {activeTags.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 flex-1">
+          {activeTags.map((tag, i) => (
+            <span key={i} className={`flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-xl border ${tag.color}`}>
+              {tag.label}
+              <button onClick={tag.onRemove} className="hover:opacity-70 cursor-pointer font-black text-xs leading-none">✕</button>
             </span>
-          )}
-          
-          {category && category !== 'All' && (
-            <span className="px-3 py-1 bg-teal-50 text-teal-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {category} <button onClick={() => setCategory('')} className="hover:text-teal-900">✕</button>
-            </span>
-          )}
-
-          {dietaryPref && dietaryPref !== 'All' && (
-            <span className="px-3 py-1 bg-orange-50 text-orange-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {dietaryPref} <button onClick={() => setDietaryPref('')} className="hover:text-orange-900">✕</button>
-            </span>
-          )}
-
-          {festival && festival !== 'All' && (
-            <span className="px-3 py-1 bg-pink-50 text-pink-700 text-xs font-bold rounded-full flex items-center gap-2">
-              {festival} <button onClick={() => setFestival('')} className="hover:text-pink-900">✕</button>
-            </span>
-          )}
-
-          <button onClick={clearAllFilters} className="text-xs font-bold text-slate-400 hover:text-slate-700 underline ml-2">
-            Clear All
+          ))}
+          <button onClick={clearAllFilters}
+            className="text-xs font-bold text-stone-400 hover:text-orange-600 underline underline-offset-2 transition-colors cursor-pointer">
+            Clear all
           </button>
         </div>
       )}
+
+      {/* Sort */}
+      <div className="flex items-center gap-2 shrink-0">
+        <span className="text-xs font-bold text-stone-400 uppercase tracking-wider hidden sm:block">SORT</span>
+        <select
+          id="sort-select"
+          value={sortBy || 'featured'}
+          onChange={(e) => setSortBy && setSortBy(e.target.value)}
+          className="bg-stone-50 border border-stone-200 text-stone-700 text-sm font-bold rounded-xl px-3 py-2 focus:outline-none focus:border-orange-400 cursor-pointer appearance-none pr-8"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a8a29e' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}>
+          <option value="featured">✨ Featured</option>
+          <option value="price-asc">↑ Price: Low → High</option>
+          <option value="price-desc">↓ Price: High → Low</option>
+          <option value="name-asc">A→Z Name</option>
+        </select>
+      </div>
     </div>
   );
 }
