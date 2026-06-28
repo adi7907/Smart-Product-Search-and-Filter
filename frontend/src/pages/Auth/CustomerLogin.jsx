@@ -79,10 +79,10 @@ export default function CustomerLogin({ setCustomerAuth }) {
             Authentic flavors,<br />crafted with love.
           </blockquote>
           <p className="text-orange-100/80 text-sm font-medium leading-relaxed max-w-xs">
-            From our kitchen to your table — traditional pickles, homemade sweets, and aromatic spices made the old-fashioned way.
+            From our kitchen to your table — traditional pickles, handcrafted sweets, and aromatic spices made the authentic way.
           </p>
           <div className="mt-10 flex gap-8">
-            {[['20+', 'Products'], ['100%', 'Homemade'], ['⭐ 4.8', 'Rated']].map(([val, lbl]) => (
+            {[['20+', 'Products'], ['100%', 'Natural'], ['Pure', 'Quality']].map(([val, lbl]) => (
               <div key={lbl}>
                 <div className="text-white font-black text-xl">{val}</div>
                 <div className="text-orange-200 text-xs font-semibold">{lbl}</div>

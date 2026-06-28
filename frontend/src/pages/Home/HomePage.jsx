@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const CATEGORIES = [
-  { name: 'Pickles', emoji: '🥒', desc: 'Tangy & spicy homemade achaar', color: '#fef9c3', border: '#fde047', img: '/products/mango_pickle.png' },
+  { name: 'Pickles', emoji: '🥒', desc: 'Tangy & spicy authentic achaar', color: '#fef9c3', border: '#fde047', img: '/products/mango_pickle.png' },
   { name: 'Sweets', emoji: '🍬', desc: 'Traditional mithai & ladoos', color: '#fce7f3', border: '#f9a8d4', img: '/products/kaju_katli.png' },
   { name: 'Snacks', emoji: '🥜', desc: 'Crunchy & savory bites', color: '#fef3c7', border: '#fbbf24', img: '/products/namkeen.png' },
   { name: 'Beverages', emoji: '☕', desc: 'Filter coffee, masala chai', color: '#ecfdf5', border: '#6ee7b7', img: '/products/filter_coffee.png' },
@@ -10,10 +10,10 @@ const CATEGORIES = [
 ];
 
 const FEATURES = [
-  { icon: '🏠', title: 'Homemade', desc: 'Every item crafted fresh in our traditional kitchen with love.' },
+  { icon: '✨', title: 'Authentic Craft', desc: 'Every item prepared fresh using timeless heritage recipes.' },
   { icon: '🌿', title: '100% Natural', desc: 'No preservatives, no artificial flavours. Pure ingredients only.' },
   { icon: '🚚', title: 'Fast Delivery', desc: 'Fresh orders dispatched within 24 hours, delivered to your door.' },
-  { icon: '⭐', title: '4.8 Rated', desc: 'Loved by thousands of happy customers across India.' },
+  { icon: '🛡️', title: 'Pure Quality', desc: 'Strict hygiene standards and selected ingredients in every batch.' },
 ];
 
 const TESTIMONIALS = [
