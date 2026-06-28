@@ -1,1 +1,33 @@
 @import "tailwindcss";
+
+/* Force light mode always — disable OS dark mode preference */
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: light; }
+}
+
+/* Global resets & font */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  color-scheme: light;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+  background: #fdfbf7;
+  color: #1c1917;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override any dark: classes by making them no-ops in light mode */
+.dark\:bg-slate-900, .dark\:bg-slate-800, .dark\:bg-slate-700 { background-color: inherit !important; }
+.dark\:text-white, .dark\:text-slate-200, .dark\:text-slate-300 { color: inherit !important; }
+.dark\:border-slate-700, .dark\:border-slate-800 { border-color: inherit !important; }
+
+/* Smooth scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #fdf8f0; }
+::-webkit-scrollbar-thumb { background: #fed7aa; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #f97316; }

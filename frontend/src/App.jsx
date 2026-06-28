@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
+import HomePage from './pages/Home/HomePage';
 import ShopScreen from './pages/Shop/Shop';
 import AdminScreen from './pages/Admin/Admin';
 import LoginScreen from './pages/Admin/Login';
@@ -37,23 +38,22 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fdfbf7] text-stone-800 font-sans">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/shop" replace />} />
-          <Route path="/shop" element={<ShopScreen products={products} customerAuth={customerAuth} onLogout={handleCustomerLogout} />} />
-          <Route path="/customer-login" element={<CustomerLogin setCustomerAuth={setCustomerAuth} />} />
-          <Route path="/login" element={<LoginScreen setIsAuthenticated={setIsAuthenticated} />} />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute>
-                <AdminScreen products={products} fetchProducts={fetchProducts} setIsAuthenticated={setIsAuthenticated} />
-              </ProtectedRoute>
-            } 
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage customerAuth={customerAuth} />} />
+        <Route path="/shop" element={<ShopScreen products={products} customerAuth={customerAuth} onLogout={handleCustomerLogout} />} />
+        <Route path="/customer-login" element={<CustomerLogin setCustomerAuth={setCustomerAuth} />} />
+        <Route path="/login" element={<LoginScreen setIsAuthenticated={setIsAuthenticated} />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminScreen products={products} fetchProducts={fetchProducts} setIsAuthenticated={setIsAuthenticated} />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
-}
+}
+
