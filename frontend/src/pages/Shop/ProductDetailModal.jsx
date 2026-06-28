@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { API_URL } from '../../config';
 import { useWishlist } from '../../hooks/useWishlist';
 import { useToast } from '../../context/ToastContext';
+import { CloseIcon, HeartIcon, CartIcon, StarIcon, TagIcon, PackageIcon } from '../../components/Icons';
 
 function resolveImage(url) {
   if (!url) return null;
@@ -53,20 +54,21 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
                 style={{ minHeight: '280px' }}
                 onError={e => { e.target.src = 'https://placehold.co/400x400/fdf4f0/ea580c?text=🍽️'; }} />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-6xl text-stone-300">🍽️</div>
+              <div className="w-full h-full flex items-center justify-center text-stone-300 font-medium text-sm">No Image</div>
             )}
             {/* Category badge */}
-            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-orange-700 text-xs font-extrabold px-3 py-1.5 rounded-xl shadow-sm border border-orange-100">
-              🏷️ {product.category}
+            <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-stone-900 text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm border border-stone-200/60 flex items-center gap-1.5">
+              <TagIcon className="w-3.5 h-3.5 text-orange-600" />
+              {product.category}
             </div>
             {/* Rating */}
-            <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1">
-              ⭐ 4.8 <span className="opacity-60 font-normal">({REVIEWS.length} reviews)</span>
+            <div className="absolute bottom-4 left-4 bg-black/70 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1.5">
+              <StarIcon className="w-3.5 h-3.5 text-amber-400" filled={true} /> 4.8 <span className="opacity-60 font-normal">({REVIEWS.length} reviews)</span>
             </div>
             {/* Close button */}
             <button onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-stone-600 hover:text-stone-900 transition-all shadow-md cursor-pointer font-bold text-sm">
-              ✕
+              className="absolute top-4 right-4 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-stone-600 hover:text-stone-900 transition-all shadow-md cursor-pointer">
+              <CloseIcon className="w-4 h-4" />
             </button>
           </div>
 
@@ -87,9 +89,10 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
 
             {/* Tabs */}
             <div className="flex gap-1 bg-stone-100 rounded-2xl p-1 mb-5">
-              {[['details', '📝 Details'], ['reviews', '⭐ Reviews']].map(([key, label]) => (
+              {[['details', 'Details'], ['reviews', 'Reviews']].map(([key, label]) => (
                 <button key={key} onClick={() => setActiveTab(key)}
-                  className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer ${activeTab === key ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+                  className={`flex-1 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${activeTab === key ? 'bg-white text-orange-600 shadow-sm' : 'text-stone-500 hover:text-stone-700'}`}>
+                  {key === 'details' ? <PackageIcon className="w-3.5 h-3.5" /> : <StarIcon className="w-3.5 h-3.5 text-amber-500" filled={false} />}
                   {label}
                 </button>
               ))}
@@ -100,29 +103,33 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
               {activeTab === 'details' && (
                 <>
                   {product.ingredients && (
-                    <div className="bg-orange-50 rounded-2xl p-4 border border-orange-100">
-                      <h4 className="font-extrabold text-stone-800 text-xs uppercase tracking-wider mb-2">🌿 Ingredients</h4>
+                    <div className="bg-orange-50/60 rounded-2xl p-4 border border-orange-100">
+                      <h4 className="font-extrabold text-stone-800 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <TagIcon className="w-3.5 h-3.5 text-orange-600" /> Ingredients
+                      </h4>
                       <p className="text-stone-600 text-sm leading-relaxed">{product.ingredients}</p>
                     </div>
                   )}
                   <div className="flex flex-wrap gap-2">
                     {product.dietary_preference && product.dietary_preference !== 'None specified' && (
                       <span className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-xl">
-                        🌱 {product.dietary_preference}
+                        Pure • {product.dietary_preference}
                       </span>
                     )}
                     {product.festival_need && product.festival_need !== 'Everyday Use' && (
                       <span className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-xl">
-                        🎉 {product.festival_need}
+                        Special • {product.festival_need}
                       </span>
                     )}
                   </div>
                   <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-1.5">
-                    <h4 className="font-extrabold text-stone-800 text-xs uppercase tracking-wider mb-2">📦 Product Info</h4>
-                    <div className="flex justify-between text-sm"><span className="text-stone-500">Status</span><span className="text-green-600 font-bold">✅ In Stock</span></div>
+                    <h4 className="font-extrabold text-stone-800 text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <PackageIcon className="w-3.5 h-3.5 text-stone-600" /> Product Info
+                    </h4>
+                    <div className="flex justify-between text-sm"><span className="text-stone-500">Status</span><span className="text-green-600 font-bold">In Stock</span></div>
                     <div className="flex justify-between text-sm"><span className="text-stone-500">Shelf Life</span><span className="font-semibold text-stone-800">30–60 days</span></div>
                     <div className="flex justify-between text-sm"><span className="text-stone-500">Weight</span><span className="font-semibold text-stone-800">{product.weight_g}g</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-stone-500">Made In</span><span className="font-semibold text-stone-800">🇮🇳 India</span></div>
+                    <div className="flex justify-between text-sm"><span className="text-stone-500">Made In</span><span className="font-semibold text-stone-800">India</span></div>
                   </div>
                 </>
               )}
@@ -138,7 +145,7 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
                         </div>
                         <span className="text-stone-400 text-xs">{r.date}</span>
                       </div>
-                      <div className="flex gap-0.5 mb-1">{Array.from({ length: r.rating }).map((_, j) => <span key={j} className="text-amber-400 text-sm">★</span>)}</div>
+                      <div className="flex gap-0.5 mb-1">{Array.from({ length: r.rating }).map((_, j) => <StarIcon key={j} className="w-3.5 h-3.5 text-amber-400" filled={true} />)}</div>
                       <p className="text-stone-600 text-sm italic">"{r.text}"</p>
                     </div>
                   ))}
@@ -161,12 +168,12 @@ export default function ProductDetailModal({ isOpen, onClose, product, addToCart
               <div className="flex gap-2">
                 <button onClick={handleWishlist}
                   className={`w-11 h-11 flex items-center justify-center rounded-2xl border-2 transition-all cursor-pointer shrink-0 ${wishlisted ? 'bg-red-50 border-red-300 text-red-500' : 'bg-stone-50 border-stone-200 text-stone-400 hover:border-red-300 hover:text-red-500'}`}>
-                  {wishlisted ? '❤️' : '🤍'}
+                  <HeartIcon className="w-5 h-5" filled={wishlisted} />
                 </button>
                 <button onClick={handleAddToCart}
-                  className="flex-1 py-3 rounded-2xl font-black text-white text-sm shadow-lg hover:scale-[1.01] active:scale-100 transition-all cursor-pointer"
+                  className="flex-1 py-3 rounded-2xl font-black text-white text-sm shadow-lg hover:scale-[1.01] active:scale-100 transition-all cursor-pointer flex items-center justify-center gap-2"
                   style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}>
-                  🛒 Add to Cart · ₹{product.price * qty}
+                  <CartIcon className="w-4.5 h-4.5 text-white" /> Add to Cart · ₹{product.price * qty}
                 </button>
               </div>
             </div>

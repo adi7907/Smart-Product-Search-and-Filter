@@ -1,4 +1,5 @@
 import CheckboxGroup from './CheckboxGroup';
+import { FilterIcon } from '../../../components/Icons';
 
 export default function FilterSidebar({
   searchTerm, setSearchTerm,
@@ -25,8 +26,8 @@ export default function FilterSidebar({
       <div className="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🎛️</span>
+          <div className="flex items-center gap-2.5">
+            <FilterIcon className="w-5 h-5 text-orange-600" />
             <h2 className="text-base font-black text-stone-900">Filters</h2>
             {totalActive > 0 && (
               <span className="w-5 h-5 bg-orange-500 text-white text-[10px] font-black rounded-full flex items-center justify-center">

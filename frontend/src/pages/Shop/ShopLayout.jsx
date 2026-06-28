@@ -6,6 +6,7 @@ import FilterResults from './FilterResults';
 import CartPanel from '../Cart/CartPanel';
 import { API_URL } from '../../config';
 import { useToast } from '../../context/ToastContext';
+import { TagIcon, CartIcon, FilterIcon } from '../../components/Icons';
 
 export default function ShopLayout({
   searchTerm, setSearchTerm,
@@ -82,15 +83,19 @@ export default function ShopLayout({
 
             {/* Offers Banner */}
             <div className="bg-gradient-to-br from-orange-500 to-amber-500 p-5 rounded-3xl text-white shadow-lg relative overflow-hidden">
-              <div className="absolute top-0 right-0 opacity-20 text-7xl pointer-events-none">🏷️</div>
+              <div className="absolute -top-4 -right-4 opacity-15 pointer-events-none">
+                <TagIcon className="w-40 h-40" />
+              </div>
               <div className="relative z-10">
-                <div className="text-xs font-extrabold uppercase tracking-wider opacity-90 mb-1">Today's Offers</div>
-                <div className="font-black text-lg leading-tight mb-2">Save up to 20% off!</div>
-                <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider opacity-90 mb-1">
+                  <TagIcon className="w-3.5 h-3.5" /> Today's Offers
+                </div>
+                <div className="font-black text-lg leading-tight mb-3">Save up to 20% off!</div>
+                <div className="space-y-1.5">
                   {[['WELCOME20', '20% off first order'], ['SHARADHA10', '10% off any order'], ['FREESHIP', 'Free delivery']].map(([code, desc]) => (
-                    <div key={code} className="flex items-center gap-2 bg-white/20 rounded-xl px-3 py-1.5 text-xs">
-                      <span className="font-black tracking-wide">{code}</span>
-                      <span className="opacity-80">— {desc}</span>
+                    <div key={code} className="flex items-center gap-2 bg-white/20 backdrop-blur-xs rounded-xl px-3 py-1.5 text-xs border border-white/20">
+                      <span className="font-black tracking-wide text-amber-100">{code}</span>
+                      <span className="opacity-90">— {desc}</span>
                     </div>
                   ))}
                 </div>
@@ -116,7 +121,7 @@ export default function ShopLayout({
               onClick={() => setIsFiltersOpen(!isFiltersOpen)}
               className="md:hidden w-full py-3.5 bg-stone-900 text-white font-extrabold rounded-2xl shadow-md flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>🎛️</span> {isFiltersOpen ? 'Hide Filters' : 'Show Filters'}
+              <FilterIcon className="w-4 h-4" /> {isFiltersOpen ? 'Hide Filters' : 'Show Filters'}
             </button>
 
             {/* Desktop & Open Filters */}
@@ -143,13 +148,14 @@ export default function ShopLayout({
                   <button
                     key={cat}
                     onClick={() => setSelectedCategories(cat === 'All' ? [] : [cat])}
-                    className={`px-5 py-2.5 rounded-2xl font-extrabold text-xs shrink-0 transition-all cursor-pointer ${
+                    className={`px-5 py-2.5 rounded-2xl font-extrabold text-xs shrink-0 transition-all cursor-pointer flex items-center gap-2 ${
                       isActive
                         ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/25 scale-105'
                         : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80 shadow-sm'
                     }`}
                   >
-                    {cat === 'All' ? '🍽️ All Dishes' : cat === 'Pickles' ? '🥭 Pickles' : cat === 'Sweets' ? '🍬 Sweets' : cat === 'Snacks' ? '🥨 Snacks' : cat === 'Beverages' ? '☕ Beverages' : cat === 'Pantry' ? '🫙 Pantry' : '🌶️ Spices'}
+                    <span>{cat === 'All' ? '🍽️' : cat === 'Pickles' ? '🥭' : cat === 'Sweets' ? '🍬' : cat === 'Snacks' ? '🥨' : cat === 'Beverages' ? '☕' : cat === 'Pantry' ? '🫙' : '🌶️'}</span>
+                    <span>{cat === 'All' ? 'All Dishes' : cat}</span>
                   </button>
                 );
               })}
@@ -176,7 +182,7 @@ export default function ShopLayout({
         className="fixed bottom-8 right-8 text-white px-7 py-4 rounded-full shadow-2xl shadow-orange-600/40 transition-transform hover:scale-105 flex items-center gap-3 z-40 cursor-pointer border border-white/20"
         style={{ background: 'linear-gradient(135deg,#f97316,#ea580c)' }}
       >
-        <span className="text-2xl">🛒</span>
+        <CartIcon className="w-5 h-5 text-white" />
         <span className="font-black text-lg">{cartTotalItems > 0 ? `${cartTotalItems} Item${cartTotalItems !== 1 ? 's' : ''}` : 'Cart'}</span>
       </button>
     </div>
