@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../../hooks/useWishlist';
+import { API_URL } from '../../../config';
+import { useToast } from '../../../context/ToastContext';
 import { ScanSearchIcon, SearchIcon, HeartIcon, CartIcon, UserIcon, PackageIcon, HomeIcon, LogOutIcon, MenuIcon, CloseIcon, SettingsIcon } from '../../../components/Icons';
 
 export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearchTerm, isProcessingVision, customerAuth, onLogout }) {
@@ -8,6 +10,11 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
   const [wishlistCount, setWishlistCount] = useState(getCount());
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showScanModal, setShowScanModal] = useState(false);
+  const [scanMode, setScanMode] = useState('choice');
+  const [imageUrlInput, setImageUrlInput] = useState('');
+  const [urlLoading, setUrlLoading] = useState(false);
+  const { showToast } = useToast();
   const dropRef = useRef(null);
   const navigate = useNavigate();
 
@@ -56,9 +63,9 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
               onChange={e => setSearchTerm(e.target.value)}
             />
             <button
-              onClick={() => { const el = document.getElementById('visual-search-upload'); if (el) el.click(); }}
+              onClick={() => setShowScanModal(true)}
               className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-500 hover:text-teal-600 hover:bg-teal-50 transition-all bg-white rounded-lg shadow-xs cursor-pointer flex items-center justify-center border border-slate-200/60"
-              title="Scan / Visual Search" disabled={isProcessingVision}>
+              title="Scan / Visual Search" disabled={isProcessingVision || urlLoading}>
               {isProcessingVision
                 ? <div className="w-3.5 h-3.5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
                 : <ScanSearchIcon className="w-3.5 h-3.5 text-slate-600 hover:text-teal-600" />}
@@ -160,7 +167,7 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
               <input type="text" placeholder="Search products..." value={searchTerm || ''} onChange={e => setSearchTerm(e.target.value)}
                 className="w-full pl-9 pr-9 py-2 bg-slate-100 rounded-xl text-xs font-medium text-slate-800 placeholder-slate-400 outline-none focus:border-teal-500 border border-transparent" />
               <button
-                onClick={() => { const el = document.getElementById('visual-search-upload'); if (el) el.click(); setMobileMenuOpen(false); }}
+                onClick={() => { setShowScanModal(true); setMobileMenuOpen(false); }}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-slate-600 hover:text-teal-600 bg-white rounded-lg shadow-xs cursor-pointer flex items-center justify-center">
                 <ScanSearchIcon className="w-3.5 h-3.5" />
               </button>
@@ -180,6 +187,143 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                 <UserIcon className="w-3.5 h-3.5 text-white" /> Sign In / Register
               </Link>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Hidden file upload input inside Navbar for universal access */}
+      <input
+        type="file"
+        id="visual-search-upload"
+        className="hidden"
+        accept="image/*"
+        onChange={async (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const formData = new FormData();
+          formData.append('image', file);
+          showToast('Scanning image with AI Vision... 📸', 'info');
+          try {
+            const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
+            const data = await res.json();
+            if (data.search_term) {
+              if (setSearchTerm) setSearchTerm(data.search_term);
+              showToast(`Identified "${data.search_term}"! 🔍`, 'success');
+              navigate('/shop');
+            }
+          } catch (err) {
+            console.error(err);
+            showToast('Visual search failed. Try again.', 'error');
+          } finally {
+            e.target.value = '';
+          }
+        }}
+      />
+
+      {/* Choice Modal for Scan or Link */}
+      {showScanModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-100 animate-pop">
+            <div className="bg-gradient-to-r from-teal-600 to-teal-700 p-5 text-white flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl">📸</span>
+                <div>
+                  <h3 className="font-black text-base">Visual & Image Search</h3>
+                  <p className="text-teal-100 text-xs">Search homemade sweets, pickles & snacks</p>
+                </div>
+              </div>
+              <button onClick={() => { setShowScanModal(false); setScanMode('choice'); }} className="text-white/80 hover:text-white text-lg font-bold p-1 cursor-pointer">✕</button>
+            </div>
+
+            <div className="p-6">
+              {scanMode === 'choice' ? (
+                <div className="space-y-3.5">
+                  <p className="text-slate-600 text-xs font-medium text-center mb-1">Choose how you want to provide the food image:</p>
+                  
+                  <button
+                    onClick={() => {
+                      setShowScanModal(false);
+                      const el = document.getElementById('visual-search-upload');
+                      if (el) el.click();
+                    }}
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 transition-all group cursor-pointer text-left shadow-xs">
+                    <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
+                      📁
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800 text-sm group-hover:text-teal-700">Upload / Scan Photo</div>
+                      <div className="text-slate-500 text-xs">Browse image file from device or camera</div>
+                    </div>
+                  </button>
+
+                  <button
+                    onClick={() => setScanMode('url')}
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 transition-all group cursor-pointer text-left shadow-xs">
+                    <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
+                      🔗
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800 text-sm group-hover:text-teal-700">Paste Image URL / Link</div>
+                      <div className="text-slate-500 text-xs">Search using web link of any food dish</div>
+                    </div>
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!imageUrlInput.trim()) return;
+                  setUrlLoading(true);
+                  showToast('Analyzing image web link... 🔍', 'info');
+                  try {
+                    const res = await fetch(`${API_URL}/api/visual-search`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ image_url: imageUrlInput.trim() })
+                    });
+                    const data = await res.json();
+                    if (data.search_term) {
+                      if (setSearchTerm) setSearchTerm(data.search_term);
+                      showToast(`Identified "${data.search_term}"! 🔍`, 'success');
+                      setShowScanModal(false);
+                      setScanMode('choice');
+                      setImageUrlInput('');
+                      navigate('/shop');
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    showToast('Failed to analyze image link.', 'error');
+                  } finally {
+                    setUrlLoading(false);
+                  }
+                }} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">Paste Image Web Link</label>
+                    <input
+                      type="url"
+                      required
+                      placeholder="https://example.com/images/samosa.jpg"
+                      value={imageUrlInput}
+                      onChange={e => setImageUrlInput(e.target.value)}
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 text-xs font-medium outline-none text-slate-800"
+                    />
+                  </div>
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setScanMode('choice')}
+                      className="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100 cursor-pointer">
+                      ← Back
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={urlLoading}
+                      className="flex-1 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md cursor-pointer disabled:opacity-70 flex items-center justify-center gap-2">
+                      {urlLoading ? 'Analyzing AI Vision...' : 'Search Food by Link 🔍'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}
