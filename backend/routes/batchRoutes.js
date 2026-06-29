@@ -4,7 +4,6 @@ module.exports = (db) => {
   router.get('/alerts', async (req, res) => {
     try {
       if (!db) return res.json({ lowStock: [], expiringSoon: [] });
-      const today = new Date().toISOString().split('T')[0];
       const expiryThreshold = new Date();
       expiryThreshold.setDate(expiryThreshold.getDate() + 30);
       const limitDate = expiryThreshold.toISOString().split('T')[0];
@@ -14,6 +13,30 @@ module.exports = (db) => {
       res.json({ lowStock, expiringSoon });
     } catch (err) {
       res.json({ lowStock: [], expiringSoon: [] });
+    }
+  });
+
+  router.get('/', async (req, res) => {
+    try {
+      if (!db) return res.json([]);
+      const batches = await db.all("SELECT b.*, p.name as product_name FROM batches b LEFT JOIN products p ON b.product_id = p.id ORDER BY b.expiry_date ASC");
+      res.json(batches);
+    } catch (err) {
+      res.json([]);
+    }
+  });
+
+  router.post('/', async (req, res) => {
+    try {
+      const { product_id, batch_number, expiry_date, stock_quantity } = req.body;
+      if (!db) return res.json({ id: Date.now(), ...req.body });
+      const result = await db.run(
+        "INSERT INTO batches (product_id, batch_number, manufacture_date, expiry_date, stock_quantity) VALUES (?, ?, ?, ?, ?)",
+        [product_id || 1, batch_number || `BATCH-${Date.now().toString().slice(-4)}`, new Date().toISOString().split('T')[0], expiry_date, stock_quantity || 20]
+      );
+      res.json({ id: result ? result.lastID : Date.now(), success: true });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
   });
 

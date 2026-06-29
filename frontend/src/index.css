@@ -5,12 +5,8 @@
    Palette: Luxury Teal & Crisp Slate (#0d9488, #0f172a)
 ═══════════════════════════════════════════════ */
 
-@media (prefers-color-scheme: dark) {
-  :root { color-scheme: light; }
-}
-
 html {
-  color-scheme: light;
+  color-scheme: light dark;
   scroll-behavior: smooth;
   -webkit-tap-highlight-color: transparent;
 }
@@ -22,12 +18,32 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.4;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Neutralize unwanted dark backgrounds */
-[class*="dark\\:"]:not(.force-dark) {}
-.dark\:bg-slate-900, .dark\:bg-slate-800, .dark\:bg-slate-700 { background-color: transparent !important; }
-.dark\:text-white { color: #0f172a !important; }
+/* Working Dark Mode Theme */
+html.dark body {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+html.dark .bg-white, html.dark .bg-slate-50, html.dark [class*="#fdfbf7"], html.dark .bg-stone-50 {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #334155 !important;
+}
+
+html.dark .text-stone-900, html.dark .text-slate-800, html.dark .text-stone-800 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-stone-600, html.dark .text-stone-500, html.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .border-stone-200, html.dark .border-slate-200, html.dark .border-stone-100 {
+  border-color: #334155 !important;
+}
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {

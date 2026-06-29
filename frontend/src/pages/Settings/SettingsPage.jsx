@@ -200,54 +200,39 @@ export default function SettingsPage({ customerAuth, onLogout }) {
             {activeTab === 'appearance' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-black text-stone-900 mb-1">Appearance & Interface</h3>
-                  <p className="text-stone-500 text-sm">Customize the app visual theme and typography scaling.</p>
+                  <h3 className="text-lg font-bold text-stone-900 mb-1">Appearance & Theme</h3>
+                  <p className="text-stone-500 text-xs">Choose your visual theme preference for the website.</p>
                 </div>
                 <div className="border-t border-stone-100 pt-6 space-y-6">
-                  
                   <div>
-                    <h4 className="font-extrabold text-stone-800 text-sm mb-3">Color Theme Preference</h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <h4 className="font-bold text-stone-800 text-xs uppercase tracking-wider mb-3">Display Mode</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md">
                       {[
-                        { id: 'light', label: '☀️ Cozy Warm (Default)', desc: 'Warm ivory & teal accents' },
-                        { id: 'contrast', label: '🔲 High Contrast', desc: 'Sharper borders & bold text' },
-                        { id: 'system', label: '💻 Auto System', desc: 'Sync with device display' }
+                        { id: 'light', label: '☀️ Light Mode', desc: 'Bright ivory & warm teal accents' },
+                        { id: 'dark', label: '🌙 Dark Mode', desc: 'Sleek dark theme for night browsing' }
                       ].map((th) => (
                         <button
                           key={th.id}
-                          onClick={() => updateSetting('appTheme', th.id)}
+                          onClick={() => {
+                            updateSetting('appTheme', th.id);
+                            if (th.id === 'dark') {
+                              document.documentElement.classList.add('dark');
+                            } else {
+                              document.documentElement.classList.remove('dark');
+                            }
+                          }}
                           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
                             settings.appTheme === th.id
-                              ? 'border-teal-500 bg-teal-50/50 shadow-xs ring-2 ring-teal-500/20'
+                              ? 'border-teal-500 bg-teal-50/60 shadow-xs ring-2 ring-teal-500/20'
                               : 'border-stone-200 hover:bg-stone-50'
                           }`}
                         >
-                          <div className="font-extrabold text-stone-900 text-sm">{th.label}</div>
+                          <div className="font-bold text-stone-900 text-sm">{th.label}</div>
                           <div className="text-xs text-stone-500 mt-1">{th.desc}</div>
                         </button>
                       ))}
                     </div>
                   </div>
-
-                  <div>
-                    <h4 className="font-extrabold text-stone-800 text-sm mb-3">Interface Font Scale</h4>
-                    <div className="flex gap-2">
-                      {[['compact', 'Compact Text'], ['normal', 'Normal (Default)'], ['large', 'Large Readable']].map(([key, label]) => (
-                        <button
-                          key={key}
-                          onClick={() => updateSetting('fontSize', key)}
-                          className={`px-4 py-2 rounded-xl text-xs font-extrabold border transition-all cursor-pointer ${
-                            settings.fontSize === key
-                              ? 'bg-stone-900 text-white border-stone-900'
-                              : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
-                          }`}
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                 </div>
               </div>
             )}

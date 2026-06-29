@@ -76,6 +76,15 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
         {/* Right controls */}
         <div className="flex items-center gap-2 shrink-0">
 
+          {/* Bulk Orders & Subscribe Button */}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('open-bulk-modal'))}
+            className="px-2.5 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold text-xs border border-orange-200/60 transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
+            title="Bulk Orders & Monthly Subscriptions"
+          >
+            <span>📦</span> <span className="hidden md:inline">Bulk / Subscribe</span>
+          </button>
+
           {/* Wishlist */}
           <Link to="/wishlist" className="relative p-2 rounded-xl text-slate-600 hover:text-red-500 hover:bg-red-50 transition-all hidden sm:flex items-center" title="Wishlist">
             <HeartIcon className="w-4 h-4" />

@@ -12,6 +12,7 @@ import OrdersPage from './pages/Orders/OrdersPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import WishlistPage from './pages/Wishlist/WishlistPage';
 import SettingsPage from './pages/Settings/SettingsPage';
+import BulkSubscribeModal from './components/BulkSubscribeModal';
 import { API_URL } from './config';
 
 export default function App() {
@@ -33,7 +34,14 @@ export default function App() {
     }
   };
 
-  useEffect(() => { fetchProducts(); }, []);
+  useEffect(() => { 
+    fetchProducts(); 
+    try {
+      const s = JSON.parse(localStorage.getItem('sharadha_app_settings') || '{}');
+      if (s.appTheme === 'dark') document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    } catch(e){}
+  }, []);
 
   const handleCustomerLogout = () => {
     localStorage.removeItem('sharadha_customer');
@@ -81,6 +89,7 @@ export default function App() {
             }
           />
         </Routes>
+        <BulkSubscribeModal />
       </BrowserRouter>
     </ToastProvider>
   );
