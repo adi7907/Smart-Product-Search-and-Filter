@@ -1,11 +1,59 @@
+import { useState, useEffect } from 'react';
 import StockAlerts from './StockAlerts';
 import OrderManager from './OrderManager';
 
 export default function AdminReports() {
+  const [stats, setStats] = useState({ revenue: 0, count: 0 });
+
+  useEffect(() => {
+    const calc = () => {
+      try {
+        const localOrders = JSON.parse(localStorage.getItem('sharadha_orders') || '[]');
+        let rev = 0;
+        localOrders.forEach(o => { rev += (o.total || o.total_amount || 0); });
+        setStats({ revenue: rev, count: localOrders.length });
+      } catch(e){}
+    };
+    calc();
+    const i = setInterval(calc, 2000);
+    return () => clearInterval(i);
+  }, []);
+
   return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-black text-slate-800 mb-6">Dashboard Reports</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="mb-8 space-y-4">
+      {/* Quick Summary Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-lg font-bold">💰</div>
+          <div>
+            <div className="text-[11px] font-bold text-slate-400 uppercase">Total Sales</div>
+            <div className="text-base font-black text-slate-800">₹{stats.revenue.toLocaleString()}</div>
+          </div>
+        </div>
+        <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg font-bold">📦</div>
+          <div>
+            <div className="text-[11px] font-bold text-slate-400 uppercase">Total Orders</div>
+            <div className="text-base font-black text-slate-800">{stats.count} orders</div>
+          </div>
+        </div>
+        <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg font-bold">⚡</div>
+          <div>
+            <div className="text-[11px] font-bold text-slate-400 uppercase">Order Status</div>
+            <div className="text-base font-black text-slate-800">Live Sync</div>
+          </div>
+        </div>
+        <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-lg font-bold">🌱</div>
+          <div>
+            <div className="text-[11px] font-bold text-slate-400 uppercase">Store Health</div>
+            <div className="text-base font-black text-green-600">Optimal</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <StockAlerts />
         <OrderManager />
       </div>

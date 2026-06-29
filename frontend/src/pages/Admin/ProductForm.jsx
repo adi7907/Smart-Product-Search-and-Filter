@@ -41,12 +41,12 @@ export default function ProductForm({ fetchProducts }) {
   };
 
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-sm border border-stone-200 mb-8">
-      <div className="flex items-center gap-2 mb-6">
-        <div className="w-8 h-8 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-black">
-          <PlusIcon className="w-5 h-5 stroke-[3]" />
+    <div className="bg-white p-5 rounded-2xl shadow-xs border border-stone-200 mb-6">
+      <div className="flex items-center gap-2 mb-4">
+        <div className="w-6 h-6 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+          <PlusIcon className="w-3.5 h-3.5 stroke-[3]" />
         </div>
-        <h3 className="text-xl font-black text-stone-900">Add New Inventory Item</h3>
+        <h3 className="text-sm font-bold text-stone-900">Add New Inventory Item</h3>
       </div>
 
       <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
