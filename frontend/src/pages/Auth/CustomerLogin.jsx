@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 const DEMO_USERS = [
-  { email: 'demo@sharadha.com', password: 'demo123', name: 'Demo Customer' },
+  { email: 'ayush@sharadha.com', password: 'password123', name: 'Ayush Aditya' },
 ];
 
 export default function CustomerLogin({ setCustomerAuth }) {
@@ -83,15 +83,7 @@ export default function CustomerLogin({ setCustomerAuth }) {
           </p>
         </div>
 
-        <div className="relative z-10 p-8">
-          <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
-            <span className="text-3xl">🎁</span>
-            <div>
-              <div className="text-white font-bold text-sm">Demo account available</div>
-              <div className="text-teal-100 text-xs font-medium">demo@sharadha.com · demo123</div>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Right form panel */}
@@ -166,12 +158,6 @@ export default function CustomerLogin({ setCustomerAuth }) {
                 style={{ background: 'linear-gradient(135deg, #0d9488, #0f766e)' }}>
                 {loading ? <Spinner label="Signing in..." /> : '→ Sign In'}
               </button>
-
-              <div className="bg-amber-50 border border-amber-200/80 rounded-xl px-4 py-2.5 text-center">
-                <p className="text-amber-700 text-xs font-semibold">
-                  Try demo: <strong>demo@sharadha.com</strong> / <strong>demo123</strong>
-                </p>
-              </div>
             </form>
           ) : (
             <form onSubmit={handleSignup} className="space-y-4">

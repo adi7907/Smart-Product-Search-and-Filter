@@ -94,10 +94,6 @@ export default function LoginScreen({ setIsAuthenticated }) {
             </div>
           </div>
         </div>
-
-        <p className="text-stone-500 text-xs text-center mt-4 font-medium">
-          Demo password: <strong className="text-stone-300">1234</strong>
-        </p>
       </div>
     </div>
   );
