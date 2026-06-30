@@ -74,8 +74,8 @@ export default function ShopFilters({
           <div>
             <label className="block text-xs font-semibold text-slate-500 uppercase mb-2">Max Price (₹)</label>
             <div className="flex gap-3 items-center">
-              <input type="range" min="50" max="2000" step="50" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600" />
-              <input type="number" min="50" max="2000" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="w-20 px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-teal-700 text-center" />
+              <input type="range" min="50" max="2000" step="50" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="w-full h-2 bg-slate-200 rounded-lg cursor-pointer accent-stone-900" />
+              <input type="number" min="50" max="2000" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="w-20 px-2 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none font-bold text-stone-800 text-center" />
             </div>
           </div>
 

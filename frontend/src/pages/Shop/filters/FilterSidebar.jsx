@@ -116,8 +116,7 @@ export default function FilterSidebar({
             </div>
             <input
               type="range" min="0" max="2000" step="50"
-              className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
-              style={{ accentColor: '#1c1917' }}
+              className="w-full h-2 bg-slate-200 rounded-lg accent-stone-900 cursor-pointer my-2"
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
             />
