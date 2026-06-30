@@ -38,7 +38,7 @@ export default function ProductGrid({ filteredProducts = [], addToCart, customer
 
   return (
     <>
-      <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+      <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-1">
         {filteredProducts.map((p) => (
           <div key={p.id} className="bg-white rounded-2xl border border-slate-200 shadow-xs hover:shadow-md hover:border-teal-400 transition-all duration-200 flex flex-col overflow-hidden group hover:-translate-y-1">
 

@@ -43,17 +43,10 @@ export default function AdminReports() {
 
   return (
     <div className="mb-8 space-y-4">
-      {/* Top Operations Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-stone-900 to-slate-800 text-white p-4 rounded-2xl shadow-sm">
-        <div>
-          <h3 className="font-bold text-sm flex items-center gap-2">
-            <span>📊</span> Live Store Operations & Analytics Hub
-          </h3>
-          <p className="text-xs text-slate-300">Real-time order tracking, batch inventory alerts, and audit exports</p>
-        </div>
+      <div className="flex justify-end">
         <button 
           onClick={handleExportCSV}
-          className="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-md cursor-pointer shrink-0"
+          className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0"
           title="Download Operations Report as Excel/CSV"
         >
           <span>📥</span> Export CSV Report
