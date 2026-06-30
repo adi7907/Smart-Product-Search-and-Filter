@@ -52,31 +52,6 @@ export default function ShopLayout({
         onLogout={onLogout}
       />
 
-      {/* Hidden file input for visual search */}
-      <input
-        type="file"
-        id="visual-search-upload"
-        className="hidden"
-        accept="image/*"
-        onChange={async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          setIsProcessingVision(true);
-          const formData = new FormData();
-          formData.append('image', file);
-          try {
-            const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
-            const data = await res.json();
-            if (data.search_term) { setSearchTerm(data.search_term); showToast(`Searching for "${data.search_term}"... 🔍`, 'info'); }
-          } catch (err) {
-            console.error(err);
-            showToast('Visual search failed. Try again.', 'error');
-          } finally {
-            setIsProcessingVision(false);
-          }
-        }}
-      />
-
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8 items-start">
 

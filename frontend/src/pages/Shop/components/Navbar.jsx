@@ -191,40 +191,14 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
         </div>
       )}
 
-      {/* Hidden file upload input inside Navbar for universal access */}
-      <input
-        type="file"
-        id="visual-search-upload"
-        className="hidden"
-        accept="image/*"
-        onChange={async (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const formData = new FormData();
-          formData.append('image', file);
-          showToast('Scanning image with AI Vision... 📸', 'info');
-          try {
-            const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
-            const data = await res.json();
-            if (data.search_term) {
-              if (setSearchTerm) setSearchTerm(data.search_term);
-              showToast(`Identified "${data.search_term}"! 🔍`, 'success');
-              navigate('/shop');
-            }
-          } catch (err) {
-            console.error(err);
-            showToast('Visual search failed. Try again.', 'error');
-          } finally {
-            e.target.value = '';
-          }
-        }}
-      />
-
       {/* Choice Modal for Scan or Link */}
       {showScanModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 animate-pop">
-            <div className="bg-stone-900 p-5 text-white flex items-center justify-between">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) { setShowScanModal(false); setScanMode('choice'); } }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in"
+        >
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 animate-pop max-h-[90vh] flex flex-col">
+            <div className="bg-stone-900 p-4 sm:p-5 text-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">📸</span>
                 <div>
@@ -232,30 +206,92 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                   <p className="text-stone-300 text-xs">Search homemade sweets, pickles & snacks</p>
                 </div>
               </div>
-              <button onClick={() => { setShowScanModal(false); setScanMode('choice'); }} className="text-white/80 hover:text-white text-lg font-bold p-1 cursor-pointer">✕</button>
+              <button 
+                onClick={() => { setShowScanModal(false); setScanMode('choice'); }} 
+                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg font-bold cursor-pointer transition-colors"
+                title="Close"
+              >✕</button>
             </div>
 
-            <div className="p-6">
+            <div className="p-5 sm:p-6 overflow-y-auto">
               {scanMode === 'choice' ? (
-                <div className="space-y-3.5">
+                <div className="space-y-3">
                   <p className="text-slate-600 text-xs font-medium text-center mb-1">Choose how you want to provide the food image:</p>
                   
-                  <button
-                    onClick={() => {
-                      setShowScanModal(false);
-                      const el = document.getElementById('visual-search-upload');
-                      if (el) el.click();
-                    }}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs">
+                  {/* Option 1: Native file input label (works on desktop & phone library) */}
+                  <label className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs block">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        setShowScanModal(false);
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        showToast('Scanning image with AI Vision... 📸', 'info');
+                        try {
+                          const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
+                          const data = await res.json();
+                          if (data.search_term) {
+                            if (setSearchTerm) setSearchTerm(data.search_term);
+                            showToast(`Identified "${data.search_term}"! 🔍`, 'success');
+                            navigate('/shop');
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          showToast('Visual search failed. Try again.', 'error');
+                        }
+                      }}
+                    />
                     <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
                       📁
                     </div>
                     <div>
-                      <div className="font-bold text-slate-800 text-sm group-hover:text-teal-700">Upload / Scan Photo</div>
-                      <div className="text-slate-500 text-xs">Browse image file from device or camera</div>
+                      <div className="font-bold text-slate-800 text-sm group-hover:text-stone-900">Upload / Browse Photo</div>
+                      <div className="text-slate-500 text-xs">Choose image from gallery or device</div>
                     </div>
-                  </button>
+                  </label>
 
+                  {/* Option 2: Native direct phone camera input */}
+                  <label className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs block sm:hidden">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      className="hidden"
+                      onChange={async (e) => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        setShowScanModal(false);
+                        const formData = new FormData();
+                        formData.append('image', file);
+                        showToast('Scanning live photo with AI Vision... 📸', 'info');
+                        try {
+                          const res = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
+                          const data = await res.json();
+                          if (data.search_term) {
+                            if (setSearchTerm) setSearchTerm(data.search_term);
+                            showToast(`Identified "${data.search_term}"! 🔍`, 'success');
+                            navigate('/shop');
+                          }
+                        } catch (err) {
+                          console.error(err);
+                          showToast('Visual search failed. Try again.', 'error');
+                        }
+                      }}
+                    />
+                    <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
+                      📷
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-800 text-sm group-hover:text-stone-900">Take Live Camera Photo</div>
+                      <div className="text-slate-500 text-xs">Scan food dish directly using phone camera</div>
+                    </div>
+                  </label>
+
+                  {/* Option 3: Paste Image URL */}
                   <button
                     onClick={() => setScanMode('url')}
                     className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs">
@@ -266,6 +302,15 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                       <div className="font-bold text-slate-800 text-sm group-hover:text-stone-900">Paste Image URL / Link</div>
                       <div className="text-slate-500 text-xs">Search using web link of any food dish</div>
                     </div>
+                  </button>
+
+                  {/* Bottom Close Button / Cross Option */}
+                  <button
+                    type="button"
+                    onClick={() => { setShowScanModal(false); setScanMode('choice'); }}
+                    className="w-full mt-3 py-3 bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-colors border border-stone-300"
+                  >
+                    ✕ Close Window
                   </button>
                 </div>
               ) : (
@@ -304,7 +349,7 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                       placeholder="https://example.com/images/samosa.jpg"
                       value={imageUrlInput}
                       onChange={e => setImageUrlInput(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 text-xs font-medium outline-none text-slate-800"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-stone-800 focus:ring-2 focus:ring-stone-800/20 text-xs font-medium outline-none text-slate-800"
                     />
                   </div>
                   <div className="flex gap-2 pt-2">
@@ -317,7 +362,7 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                     <button
                       type="submit"
                       disabled={urlLoading}
-                      className="flex-1 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md cursor-pointer disabled:opacity-70 flex items-center justify-center gap-2">
+                      className="flex-1 py-2.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs shadow-md cursor-pointer disabled:opacity-70 flex items-center justify-center gap-2">
                       {urlLoading ? 'Analyzing AI Vision...' : 'Search Food by Link 🔍'}
                     </button>
                   </div>
