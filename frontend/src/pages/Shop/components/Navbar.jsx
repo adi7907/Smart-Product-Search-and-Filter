@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../../hooks/useWishlist';
 import { API_URL } from '../../../config';
@@ -192,12 +193,13 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
       )}
 
       {/* Choice Modal for Scan or Link */}
-      {showScanModal && (
+      {showScanModal && createPortal(
         <div 
           onClick={(e) => { if (e.target === e.currentTarget) { setShowScanModal(false); setScanMode('choice'); } }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in"
+          className="fixed inset-0 z-[999999] flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fade-in"
+          style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 999999 }}
         >
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 animate-pop max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 animate-pop max-h-[90vh] flex flex-col my-auto">
             <div className="bg-stone-900 p-4 sm:p-5 text-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">📸</span>
@@ -370,7 +372,8 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </nav>
   );
