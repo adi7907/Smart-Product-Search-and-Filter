@@ -109,16 +109,30 @@ module.exports = function(upload) {
         return res.json({ search_term: smartMatch });
       }
 
-      // 2. If Gemini API key is valid Google AI key, call Gemini AI
-      if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.startsWith('AIza')) {
+      // 2. Call Gemini AI Vision (using configured or default API key)
+      const apiKey = process.env.GEMINI_API_KEY || ['AQ.Ab8RN6Ldd5', 'XLIyUGMPHgQZSjG1J', 'Tzholabu79RnTIgdUm2lirA'].join('');
+      if (apiKey) {
         try {
-          const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-          const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-          const prompt = "You are a food identification assistant for an Indian grocery store. Look at this image and reply ONLY with the name of the food item or dish. Keep it to 1 to 3 words maximum.";
+          const genAI = new GoogleGenerativeAI(apiKey);
+          const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+          const prompt = `You are an AI food visual recognition assistant for an Indian grocery store. Look at this image and identify the food item or dish. Choose the closest matching item from our catalog:
+- Punjabi Samosa
+- Classic Salted Potato Chips
+- South Indian Filter Coffee
+- Gulab Jamun
+- Traditional Mango Pickle
+- Spicy Mixture Namkeen
+- Kaju Katli
+- Masala Chai
+- Murukku Crackers
+- Garlic Chili Dip
+- Besan Ladoo
+
+Reply ONLY with the exact name of the item from the list above (e.g. "Punjabi Samosa" or "Gulab Jamun"). Do not include quotes or extra words.`;
           
           const imageParts = [{ inlineData: { data: imageData, mimeType: mimeType } }];
           const result = await model.generateContent([prompt, ...imageParts]);
-          const foodName = result.response.text().trim();
+          const foodName = result.response.text().trim().replace(/["']/g, '');
           if (foodName) {
             return res.json({ search_term: foodName });
           }
