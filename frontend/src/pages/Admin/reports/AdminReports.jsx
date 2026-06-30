@@ -19,8 +19,47 @@ export default function AdminReports() {
     return () => clearInterval(i);
   }, []);
 
+  const handleExportCSV = () => {
+    try {
+      const localOrders = JSON.parse(localStorage.getItem('sharadha_orders') || '[]');
+      let csv = "Order ID,Order Date,Total Amount (INR),Delivery Status,Items\n";
+      localOrders.forEach(o => {
+        const items = (o.items || []).map(i => `${i.name} (x${i.quantity})`).join('; ');
+        csv += `"${o.id}","${o.date || new Date().toISOString()}","${o.total || o.total_amount || 0}","${o.status || o.delivery_status || 'Placed'}","${items}"\n`;
+      });
+      
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `Sharadha_Stores_Operations_Report_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch(e) {
+      alert("No data available to export.");
+    }
+  };
+
   return (
     <div className="mb-8 space-y-4">
+      {/* Top Operations Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-stone-900 to-slate-800 text-white p-4 rounded-2xl shadow-sm">
+        <div>
+          <h3 className="font-bold text-sm flex items-center gap-2">
+            <span>📊</span> Live Store Operations & Analytics Hub
+          </h3>
+          <p className="text-xs text-slate-300">Real-time order tracking, batch inventory alerts, and audit exports</p>
+        </div>
+        <button 
+          onClick={handleExportCSV}
+          className="px-3.5 py-2 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-md cursor-pointer shrink-0"
+          title="Download Operations Report as Excel/CSV"
+        >
+          <span>📥</span> Export CSV Report
+        </button>
+      </div>
+
       {/* Quick Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
