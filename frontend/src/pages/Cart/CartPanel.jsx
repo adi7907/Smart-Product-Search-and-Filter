@@ -85,25 +85,6 @@ export default function CartPanel({ isOpen, onClose, cart, setCart, customerAuth
               </div>
             )}
 
-            {/* Coupon */}
-            <div className="px-4 py-2.5 border-b border-slate-100">
-              <div className="flex gap-1.5">
-                <input value={couponCode} onChange={e => { setCouponCode(e.target.value.toUpperCase()); setCouponError(''); }}
-                  placeholder="Coupon code (WELCOME20)"
-                  className="flex-1 px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-800 outline-none focus:border-teal-600" />
-                <button onClick={applyCoupon} className="px-3 py-1.5 rounded-lg text-white text-xs font-bold cursor-pointer"
-                  style={{ background: 'linear-gradient(135deg,#0d9488,#0f766e)' }}>Apply</button>
-              </div>
-              {couponError && <p className="text-red-500 text-[11px] mt-1 font-semibold">⚠️ {couponError}</p>}
-              {appliedCoupon && (
-                <div className="mt-1.5 flex items-center gap-1.5 bg-teal-50 border border-teal-200 rounded-lg px-2.5 py-1">
-                  <span className="text-teal-600 text-[11px]">✓</span>
-                  <span className="text-teal-800 text-[11px] font-bold flex-1">{couponCode} — {appliedCoupon.label}</span>
-                  <button onClick={() => { setAppliedCoupon(null); setCouponCode(''); }} className="text-slate-400 text-[11px] hover:text-red-500 cursor-pointer">✕</button>
-                </div>
-              )}
-            </div>
-
             {/* Bill */}
             <div className="px-4 py-3 space-y-1.5 text-xs">
               <div className="flex justify-between text-slate-600 font-medium"><span>Subtotal</span><span>₹{subtotal}</span></div>

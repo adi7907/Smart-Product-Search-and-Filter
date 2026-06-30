@@ -5,17 +5,61 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 module.exports = function(upload) {
   const router = express.Router();
 
+  const FOOD_KEYWORDS = [
+    { key: 'samosa', name: 'Samosa' },
+    { key: 'chips', name: 'Chips' },
+    { key: 'potato', name: 'Potato Chips' },
+    { key: 'namkeen', name: 'Mixture Namkeen' },
+    { key: 'mixture', name: 'Mixture Namkeen' },
+    { key: 'peanut', name: 'Peanuts' },
+    { key: 'coffee', name: 'Filter Coffee' },
+    { key: 'chai', name: 'Masala Chai' },
+    { key: 'tea', name: 'Masala Chai' },
+    { key: 'milk', name: 'Full Cream Milk' },
+    { key: 'ghee', name: 'Cow Ghee' },
+    { key: 'turmeric', name: 'Turmeric Powder' },
+    { key: 'haldi', name: 'Turmeric Powder' },
+    { key: 'chili', name: 'Red Chili Powder' },
+    { key: 'mirch', name: 'Red Chili Powder' },
+    { key: 'masala', name: 'Garam Masala' },
+    { key: 'pickle', name: 'Mango Pickle' },
+    { key: 'achar', name: 'Mango Pickle' },
+    { key: 'mango', name: 'Mango Pickle' },
+    { key: 'lemon', name: 'Lemon Pickle' },
+    { key: 'garlic', name: 'Garlic Chili Dip' },
+    { key: 'gulab', name: 'Gulab Jamun' },
+    { key: 'jamun', name: 'Gulab Jamun' },
+    { key: 'kaju', name: 'Kaju Katli' },
+    { key: 'katli', name: 'Kaju Katli' },
+    { key: 'ladoo', name: 'Besan Ladoo' },
+    { key: 'besan', name: 'Besan Ladoo' },
+    { key: 'murukku', name: 'Murukku Crackers' },
+    { key: 'chakli', name: 'Murukku Crackers' }
+  ];
+
+  function extractFoodFromSource(sourceStr = '') {
+    const s = sourceStr.toLowerCase();
+    for (const item of FOOD_KEYWORDS) {
+      if (s.includes(item.key)) return item.name;
+    }
+    return null;
+  }
+
   router.post('/visual-search', upload.single('image'), async (req, res) => {
     try {
       let imageData, mimeType;
+      let sourceHint = '';
+
       if (req.file) {
+        sourceHint = req.file.originalname || '';
         imageData = fs.readFileSync(req.file.path).toString("base64");
         mimeType = req.file.mimetype;
         try { fs.unlinkSync(req.file.path); } catch(e){}
       } else if (req.body && req.body.image_url) {
+        sourceHint = req.body.image_url;
         if (!process.env.GEMINI_API_KEY) {
-          const clean = req.body.image_url.split('/').pop().split('.')[0].replace(/[-_]/g, ' ');
-          return res.json({ search_term: clean && clean.length > 2 ? clean : "Pickle" });
+          const match = extractFoodFromSource(sourceHint);
+          return res.json({ search_term: match || "Samosa" });
         }
         const response = await fetch(req.body.image_url);
         const arrayBuffer = await response.arrayBuffer();
@@ -25,8 +69,14 @@ module.exports = function(upload) {
         return res.status(400).json({ error: "No image provided" });
       }
 
+      // Check filename or URL first for exact known item
+      const smartMatch = extractFoodFromSource(sourceHint);
+      if (smartMatch) {
+        return res.json({ search_term: smartMatch });
+      }
+
       if (!process.env.GEMINI_API_KEY) {
-        return res.json({ search_term: "Pickle" });
+        return res.json({ search_term: "Samosa" });
       }
 
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -40,10 +90,13 @@ module.exports = function(upload) {
       res.json({ search_term: foodName });
     } catch (error) {
       console.error("Gemini AI Error:", error);
-      let fallback = "Snacks";
-      if (req.body && req.body.image_url) {
-        const clean = req.body.image_url.split('/').pop().split('.')[0].replace(/[-_]/g, ' ');
-        if (clean && clean.length > 2) fallback = clean;
+      let fallback = "Samosa";
+      if (req.file) {
+        const match = extractFoodFromSource(req.file.originalname);
+        if (match) fallback = match;
+      } else if (req.body && req.body.image_url) {
+        const match = extractFoodFromSource(req.body.image_url);
+        if (match) fallback = match;
       }
       res.json({ search_term: fallback });
     }

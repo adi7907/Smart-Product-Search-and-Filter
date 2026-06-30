@@ -83,27 +83,6 @@ export default function ShopLayout({
           {/* Left Column: Intro Box + Filter Sidebar */}
           <div className="w-full md:w-80 shrink-0 flex flex-col gap-6">
 
-            {/* Offers Banner */}
-            <div className="bg-gradient-to-br from-orange-500 to-amber-500 p-5 rounded-3xl text-white shadow-lg relative overflow-hidden">
-              <div className="absolute -top-4 -right-4 opacity-15 pointer-events-none">
-                <TagIcon className="w-40 h-40" />
-              </div>
-              <div className="relative z-10">
-                <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider opacity-90 mb-1">
-                  <TagIcon className="w-3.5 h-3.5" /> Today's Offers
-                </div>
-                <div className="font-black text-lg leading-tight mb-3">Save up to 20% off!</div>
-                <div className="space-y-1.5">
-                  {[['WELCOME20', '20% off first order'], ['SHARADHA10', '10% off any order'], ['FREESHIP', 'Free delivery']].map(([code, desc]) => (
-                    <div key={code} className="flex items-center gap-2 bg-white/20 backdrop-blur-xs rounded-xl px-3 py-1.5 text-xs border border-white/20">
-                      <span className="font-black tracking-wide text-amber-100">{code}</span>
-                      <span className="opacity-90">— {desc}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
             {/* Small Clean Intro Card on Left */}
             <div className="bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-white p-6 rounded-3xl border border-orange-200/60 shadow-sm relative overflow-hidden">
               <div className="flex items-center gap-3 mb-3">
@@ -152,14 +131,13 @@ export default function ShopLayout({
                   <button
                     key={cat}
                     onClick={() => setSelectedCategories(cat === 'All' ? [] : [cat])}
-                    className={`px-5 py-2.5 rounded-2xl font-extrabold text-xs shrink-0 transition-all cursor-pointer flex items-center gap-2 ${
+                    className={`px-5 py-2.5 rounded-xl font-bold text-xs shrink-0 transition-all cursor-pointer border ${
                       isActive
-                        ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md shadow-orange-500/25 scale-105'
-                        : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200/80 shadow-sm'
+                        ? 'bg-stone-900 text-white border-stone-900 shadow-sm font-extrabold'
+                        : 'bg-white text-stone-700 hover:bg-stone-100 border-stone-200 shadow-xs'
                     }`}
                   >
-                    <span>{cat === 'All' ? '🍽️' : cat === 'Pickles' ? '🥭' : cat === 'Sweets' ? '🍬' : cat === 'Snacks' ? '🥨' : cat === 'Beverages' ? '☕' : cat === 'Pantry' ? '🫙' : '🌶️'}</span>
-                    <span>{cat === 'All' ? 'All Dishes' : cat}</span>
+                    {cat === 'All' ? 'All Dishes' : cat}
                   </button>
                 );
               })}

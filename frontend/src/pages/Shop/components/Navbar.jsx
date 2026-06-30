@@ -231,14 +231,14 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
 
       {/* Choice Modal for Scan or Link */}
       {showScanModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-100 animate-pop">
-            <div className="bg-gradient-to-r from-teal-600 to-teal-700 p-5 text-white flex items-center justify-between">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 animate-pop">
+            <div className="bg-stone-900 p-5 text-white flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">📸</span>
                 <div>
                   <h3 className="font-black text-base">Visual & Image Search</h3>
-                  <p className="text-teal-100 text-xs">Search homemade sweets, pickles & snacks</p>
+                  <p className="text-stone-300 text-xs">Search homemade sweets, pickles & snacks</p>
                 </div>
               </div>
               <button onClick={() => { setShowScanModal(false); setScanMode('choice'); }} className="text-white/80 hover:text-white text-lg font-bold p-1 cursor-pointer">✕</button>
@@ -255,8 +255,8 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
                       const el = document.getElementById('visual-search-upload');
                       if (el) el.click();
                     }}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 transition-all group cursor-pointer text-left shadow-xs">
-                    <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs">
+                    <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
                       📁
                     </div>
                     <div>
@@ -267,12 +267,12 @@ export default function Navbar({ cartCount, setIsCartOpen, searchTerm, setSearch
 
                   <button
                     onClick={() => setScanMode('url')}
-                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-slate-200 hover:border-teal-500 hover:bg-teal-50/50 transition-all group cursor-pointer text-left shadow-xs">
-                    <div className="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
+                    className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-stone-200 hover:border-stone-800 hover:bg-stone-50 transition-all group cursor-pointer text-left shadow-xs">
+                    <div className="w-12 h-12 rounded-xl bg-stone-100 text-stone-800 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform font-bold">
                       🔗
                     </div>
                     <div>
-                      <div className="font-bold text-slate-800 text-sm group-hover:text-teal-700">Paste Image URL / Link</div>
+                      <div className="font-bold text-slate-800 text-sm group-hover:text-stone-900">Paste Image URL / Link</div>
                       <div className="text-slate-500 text-xs">Search using web link of any food dish</div>
                     </div>
                   </button>

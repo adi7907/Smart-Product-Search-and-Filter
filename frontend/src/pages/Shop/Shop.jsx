@@ -2,24 +2,25 @@ import { useState, useEffect } from 'react';
 import ShopLayout from './ShopLayout';
 import { API_URL } from '../../config';
 
-// Lightweight Fuzzy Matching Helper (handles typos like 'coka kola' -> 'Coca Cola')
-function fuzzyMatch(str = '', query = '') {
-  if (!query) return true;
-  const cleanStr = str.toLowerCase().replace(/[^a-z0-9]/g, '');
-  const cleanQuery = query.toLowerCase().replace(/[^a-z0-9]/g, '');
-  if (cleanStr.includes(cleanQuery)) return true;
+// Accurate Matching Helper (prevents false positives like 'chips' matching 'spices')
+function exactOrFuzzyMatch(product, query = '') {
+  if (!query || !query.trim()) return true;
+  const q = query.toLowerCase().trim();
+  const name = (product.name || '').toLowerCase();
+  const cat = (product.category || '').toLowerCase();
+  const ing = (product.ingredients || '').toLowerCase();
 
-  // Phonetic normalization (k <-> c, z <-> s, ph <-> f)
-  const norm = s => s.replace(/k/g, 'c').replace(/z/g, 's').replace(/ph/g, 'f').replace(/(.)\1+/g, '$1');
-  if (norm(cleanStr).includes(norm(cleanQuery))) return true;
+  // Exact substring or ingredient check
+  if (name.includes(q) || ing.includes(q)) return true;
+  if (cat === q || cat.startsWith(q) || (q.length > 3 && q.startsWith(cat))) return true;
 
-  // Character overlap ratio for general typos
-  const queryChars = new Set(cleanQuery);
-  let matchCount = 0;
-  for (let ch of queryChars) {
-    if (cleanStr.includes(ch)) matchCount++;
+  // Keyword word match (e.g. searching 'samosa' or 'chips')
+  const qWords = q.split(/\s+/);
+  for (let w of qWords) {
+    if (w.length >= 3 && name.includes(w)) return true;
   }
-  return (matchCount / queryChars.size) >= 0.75 && Math.abs(cleanStr.length - cleanQuery.length) <= 5;
+
+  return false;
 }
 
 export default function Shop({ customerAuth, onLogout, cart, setCart }) {
@@ -42,7 +43,7 @@ export default function Shop({ customerAuth, onLogout, cart, setCart }) {
   }, []);
 
   let filteredProducts = products.filter(product => {
-    const matchesSearch = fuzzyMatch(product.name, searchTerm) || fuzzyMatch(product.category, searchTerm);
+    const matchesSearch = exactOrFuzzyMatch(product, searchTerm);
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category);
     const matchesDiet = selectedDiets.length === 0 || selectedDiets.includes(product.dietary_preference);
     const matchesFestival = selectedFestivals.length === 0 || selectedFestivals.includes(product.festival_need);

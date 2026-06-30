@@ -276,35 +276,6 @@ export default function CheckoutFlow({ cart, setCart, customerAuth }) {
                 </div>
               </div>
 
-              {/* Coupon */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-6">
-                <h3 className="font-black text-stone-900 text-sm mb-3">🏷️ Apply Coupon</h3>
-                <div className="flex gap-2">
-                  <input value={couponCode} onChange={e => { setCouponCode(e.target.value.toUpperCase()); setCouponError(''); }}
-                    placeholder="Enter code (e.g. WELCOME20)"
-                    className="flex-1 px-4 py-2.5 rounded-xl border border-stone-200 text-sm font-bold text-stone-800 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100" />
-                  <button onClick={applyCoupon} className="px-5 py-2.5 rounded-xl font-extrabold text-white text-sm" style={{ background: 'linear-gradient(135deg,#0d9488,#0f766e)' }}>
-                    Apply
-                  </button>
-                </div>
-                {couponError && <p className="text-red-500 text-xs font-semibold mt-2">⚠️ {couponError}</p>}
-                {appliedCoupon && (
-                  <div className="mt-2 flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl px-4 py-2">
-                    <span className="text-green-600 text-sm">✅</span>
-                    <span className="text-green-700 text-xs font-bold">{couponCode} applied — {appliedCoupon.desc}</span>
-                    <button onClick={() => { setAppliedCoupon(null); setCouponCode(''); }} className="ml-auto text-stone-400 hover:text-red-500 text-xs font-bold">Remove</button>
-                  </div>
-                )}
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {Object.entries(COUPONS).map(([code, c]) => (
-                    <button key={code} onClick={() => { setCouponCode(code); setAppliedCoupon(c); setCouponError(''); }}
-                      className="px-3 py-1.5 bg-teal-50 border border-teal-200 rounded-xl text-teal-700 text-xs font-extrabold hover:bg-teal-100 transition-colors cursor-pointer">
-                      {code} — {c.desc}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="flex gap-3">
                 <button onClick={() => setStep(1)} className="px-5 py-3 rounded-2xl font-bold text-stone-700 bg-white hover:bg-stone-100 transition-colors text-sm border border-stone-200">← Back</button>
                 <button onClick={handlePlaceOrder}

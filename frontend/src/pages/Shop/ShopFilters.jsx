@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { API_URL } from '../../config';
 
 export default function ShopFilters({ 
   searchTerm, setSearchTerm, 
@@ -20,7 +21,7 @@ export default function ShopFilters({
     formData.append('image', file);
 
     try {
-      const response = await fetch('http://localhost:5000/api/visual-search', { method: 'POST', body: formData });
+      const response = await fetch(`${API_URL}/api/visual-search`, { method: 'POST', body: formData });
       const data = await response.json();
       if (response.ok && data.search_term) setSearchTerm(data.search_term);
       else alert("Could not identify the image. Please try another one.");
