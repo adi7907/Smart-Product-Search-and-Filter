@@ -43,16 +43,6 @@ export default function AdminReports() {
 
   return (
     <div className="mb-8 space-y-4">
-      <div className="flex justify-end">
-        <button 
-          onClick={handleExportCSV}
-          className="px-3.5 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs transition-all flex items-center gap-1.5 shadow-xs cursor-pointer shrink-0"
-          title="Download Operations Report as Excel/CSV"
-        >
-          <span>📥</span> Export CSV Report
-        </button>
-      </div>
-
       {/* Quick Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
