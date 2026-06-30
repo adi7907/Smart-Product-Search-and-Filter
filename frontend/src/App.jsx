@@ -12,7 +12,6 @@ import OrdersPage from './pages/Orders/OrdersPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import WishlistPage from './pages/Wishlist/WishlistPage';
 import SettingsPage from './pages/Settings/SettingsPage';
-import BulkSubscribeModal from './components/BulkSubscribeModal';
 import { API_URL } from './config';
 
 export default function App() {
@@ -89,7 +88,6 @@ export default function App() {
             }
           />
         </Routes>
-        <BulkSubscribeModal />
       </BrowserRouter>
     </ToastProvider>
   );
